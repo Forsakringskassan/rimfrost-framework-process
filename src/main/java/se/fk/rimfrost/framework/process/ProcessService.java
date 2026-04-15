@@ -16,7 +16,7 @@ public class ProcessService
       return handlaggningId;
    }
 
-   public HandlaggningResponseMessageData informAboutDecision(String handlaggningId, Utfall utfall)
+   public HandlaggningResponseMessageData endProcess(String handlaggningId, Utfall utfall)
    {
       System.out.printf("Process for handlaggningId %s finished with result %s%n", handlaggningId, utfall);
       HandlaggningResponseMessageData vahHandlaggningResponseMessageData = new HandlaggningResponseMessageData();
