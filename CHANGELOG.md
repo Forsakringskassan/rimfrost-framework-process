@@ -2,6 +2,13 @@
 
 Changelog of rimfrost-framework-process.
 
+## 0.0.2 (2026-04-15)
+
+### Bug Fixes
+
+-  renamed to endProcess ([f3e61](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/f3e61e71043219c) Nils Elveros)  
+-  add ProcessService ([273f6](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/273f6f8469867f1) Nils Elveros)  
+
 ## 0.0.1 (2026-04-10)
 
 ### Features
