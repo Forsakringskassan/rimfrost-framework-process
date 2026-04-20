@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-process.
 
+## 0.0.3 (2026-04-20)
+
+### Bug Fixes
+
+-  add logger instead of SYSO ([9f2a3](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/9f2a3541f762a6d) Nils Elveros)  
+
 ## 0.0.2 (2026-04-15)
 
 ### Bug Fixes
