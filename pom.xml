@@ -27,12 +27,12 @@
     <dependency>
       <groupId>se.fk.rimfrost.framework.regel</groupId>
       <artifactId>rimfrost-framework-regel-asyncapi</artifactId>
-      <version>0.0.3</version>
+      <version>1.0.0</version>
     </dependency>
     <dependency>
       <groupId>se.fk.rimfrost</groupId>
       <artifactId>rimfrost-process-asyncapi</artifactId>
-      <version>0.1.4</version>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 
