@@ -2,6 +2,16 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.0.0 (2026-04-28)
+
+### Breaking changes
+
+-  release 1.0 ([3be51](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/3be519469fcb228) Nils Elveros)  
+
+### Features
+
+-  release 1.0 ([3be51](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/3be519469fcb228) Nils Elveros)  
+
 ## 0.0.3 (2026-04-20)
 
 ### Bug Fixes
