@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<BugCollection version='4.9.8' threshold='medium' effort='default'><Error></Error><Project><SrcDir>C:\Users\jorlinds\IdeaProjects\rimfrost-framework-process\src\main\java</SrcDir><SrcDir>C:\Users\jorlinds\IdeaProjects\rimfrost-framework-process\target\generated-sources\annotations</SrcDir><SrcDir>C:\Users\jorlinds\IdeaProjects\rimfrost-framework-process\src\test\java</SrcDir><SrcDir>C:\Users\jorlinds\IdeaProjects\rimfrost-framework-process\target\generated-test-sources\test-annotations</SrcDir></Project></BugCollection>

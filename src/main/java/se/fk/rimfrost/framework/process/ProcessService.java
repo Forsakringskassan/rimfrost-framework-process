@@ -1,5 +1,6 @@
 package se.fk.rimfrost.framework.process;
 
+import se.fk.rimfrost.HandlaggningErrorInformation;
 import se.fk.rimfrost.HandlaggningRequestMessageData;
 import se.fk.rimfrost.HandlaggningResponseMessageData;
 import se.fk.rimfrost.framework.regel.Utfall;
@@ -12,7 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ProcessService
 {
-
    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessService.class);
 
    public String startProcess(HandlaggningRequestMessageData handlaggningRequest)
@@ -25,10 +25,22 @@ public class ProcessService
    public HandlaggningResponseMessageData endProcess(String handlaggningId, Utfall utfall)
    {
       LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, utfall);
-      HandlaggningResponseMessageData vahHandlaggningResponseMessageData = new HandlaggningResponseMessageData();
-      vahHandlaggningResponseMessageData.setHandlaggningId(handlaggningId);
-      vahHandlaggningResponseMessageData.setResultat(utfall == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
-      return vahHandlaggningResponseMessageData;
+      HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
+      response.setHandlaggningId(handlaggningId);
+      response.setResultat(utfall == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
+      return response;
    }
 
+   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, String felkod, String felmeddelande)
+   {
+      LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
+      HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
+      errorInfo.setFelkod(felkod);
+      errorInfo.setFelmeddelande(felmeddelande);
+      HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
+      response.setHandlaggningId(handlaggningId);
+      response.setResultat("FEL");
+      response.setError(errorInfo);
+      return response;
+   }
 }

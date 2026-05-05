@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: se.fk.github.archunit.Slf4jUsageArchUnitTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.404 s -- in se.fk.github.archunit.Slf4jUsageArchUnitTest
