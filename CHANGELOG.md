@@ -2,6 +2,21 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.1.0 (2026-05-06)
+
+### Other changes
+
+**docs/FKPOC-635: add error handling documentation to README**
+
+
+[33a92](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/33a92ccad7374e7) Jorgen Lindstrom *2026-05-05 14:28:13*
+
+**feat/FKPOC-635: add error handling for rule errors in VAH process**
+
+
+[d3bcb](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d3bcb560bada054) Jorgen Lindstrom *2026-05-05 14:20:16*
+
+
 ## 1.0.0 (2026-04-28)
 
 ### Breaking changes
