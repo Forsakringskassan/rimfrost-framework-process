@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"se.fk.rimfrost.framework.process","l":"ProcessService"},{"p":"se.fk.rimfrost.framework.process","l":"RegelService"}];updateSearchResults();
