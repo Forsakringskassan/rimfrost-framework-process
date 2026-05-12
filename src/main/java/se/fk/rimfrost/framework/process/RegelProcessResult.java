@@ -1,21 +1,25 @@
 package se.fk.rimfrost.framework.process;
 
+import edu.umd.cs.findbugs.annotations.Nullable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
-import se.fk.rimfrost.framework.regel.RegelFelkod;
 import se.fk.rimfrost.framework.regel.Utfall;
 
 public class RegelProcessResult
 {
-
    private final Utfall utfall;
-   private final RegelFelkod felkod;
-   private final String felmeddelande;
 
+   @Nullable
+   private final RegelErrorInformation error;
+
+   @SuppressFBWarnings(
+   {
+         "EI_EXPOSE_REP2", "EI_EXPOSE_REP"
+   })
    public RegelProcessResult(Utfall utfall, RegelErrorInformation error)
    {
       this.utfall = utfall;
-      this.felkod = error != null ? error.getFelkod() : null;
-      this.felmeddelande = error != null ? error.getFelmeddelande() : null;
+      this.error = error;
    }
 
    public Utfall getUtfall()
@@ -23,13 +27,10 @@ public class RegelProcessResult
       return utfall;
    }
 
-   public RegelFelkod getFelkod()
+   @Nullable
+   @SuppressFBWarnings("EI_EXPOSE_REP")
+   public RegelErrorInformation getError()
    {
-      return felkod;
-   }
-
-   public String getFelmeddelande()
-   {
-      return felmeddelande;
+      return error;
    }
 }
