@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+name: fk-logging-archunit
+Automatic-Module-Name: se.fk.github.logging.fk-logging-archunit
+

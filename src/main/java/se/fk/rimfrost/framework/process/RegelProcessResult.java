@@ -12,10 +12,7 @@ public class RegelProcessResult
    @Nullable
    private final RegelErrorInformation error;
 
-   @SuppressFBWarnings(
-   {
-         "EI_EXPOSE_REP2", "EI_EXPOSE_REP"
-   })
+   @SuppressFBWarnings("EI_EXPOSE_REP2")
    public RegelProcessResult(Utfall utfall, RegelErrorInformation error)
    {
       this.utfall = utfall;
