@@ -3,6 +3,7 @@
 *.iml
 *.iws
 .gradle
+target
 
 # NetBeans
 nb-configuration.xml
@@ -33,3 +34,4 @@ src/generated-source
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+target/
