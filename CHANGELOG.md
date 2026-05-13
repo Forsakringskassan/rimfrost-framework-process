@@ -2,6 +2,41 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.2.0 (2026-05-13)
+
+### Other changes
+
+**Fix broken ignore target/ directory**
+
+
+[d13db](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d13db94448f311c) Lars Persson *2026-05-12 14:38:30*
+
+**fix/FKPOC-770: add SuppressFBWarnings on constructor for EI_EXPOSE_REP2**
+
+
+[c6369](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/c6369209f649e20) Jorgen Lindstrom *2026-05-12 14:22:33*
+
+**refactor/FKPOC-770: return RegelErrorInformation directly with Nullable and SuppressFBWarnings**
+
+
+[6175b](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/6175b3b6045d953) Jorgen Lindstrom *2026-05-12 14:10:02*
+
+**Fix spotless error**
+
+
+[b013e](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/b013ef65a3e50ea) Jorgen Lindstrom *2026-05-12 12:13:56*
+
+**fix/FKPOC-770: extract felkod and felmeddelande to avoid mutable object exposure**
+
+
+[55ec8](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/55ec888a4156170) Jorgen Lindstrom *2026-05-12 12:05:41*
+
+**feat/FKPOC-770: add RegelProcessResult and update RegelService to return utfall and error**
+
+
+[11d6a](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/11d6a6145fd8ae8) Jorgen Lindstrom *2026-05-12 10:52:53*
+
+
 ## 1.1.0 (2026-05-06)
 
 ### Other changes
