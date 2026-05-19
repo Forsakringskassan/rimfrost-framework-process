@@ -2,6 +2,16 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.3.0 (2026-05-19)
+
+### Other changes
+
+**feat/FKPOC-774: update endProcess to accept RegelProcessResult instead of Utfall**
+
+
+[2da85](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/2da852454209db9) Jorgen Lindstrom *2026-05-19 08:24:11*
+
+
 ## 1.2.0 (2026-05-13)
 
 ### Other changes
