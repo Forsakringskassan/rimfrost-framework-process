@@ -31,8 +31,22 @@ public class ProcessService
       return response;
    }
 
-   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, String felkod, String felmeddelande)
+   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult result)
    {
+      String felkod = "OKAND";
+      String felmeddelande = "Okant fel";
+      if (result.getError() != null)
+      {
+         var error = result.getError();
+         if (error.getFelkod() != null)
+         {
+            felkod = error.getFelkod().getValue();
+         }
+         if (error.getFelmeddelande() != null)
+         {
+            felmeddelande = error.getFelmeddelande();
+         }
+      }
       LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
       HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
       errorInfo.setFelkod(felkod);
