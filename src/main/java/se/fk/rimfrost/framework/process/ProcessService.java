@@ -23,10 +23,20 @@ public class ProcessService
 
    public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult result)
    {
-      se.fk.rimfrost.framework.regel.RegelErrorInformation error = result != null ? result.getError() : null;
-      se.fk.rimfrost.framework.regel.RegelFelkod felkodEnum = error != null ? error.getFelkod() : null;
-      String felkod = felkodEnum != null ? felkodEnum.getValue() : "OKAND";
-      String felmeddelande = error != null && error.getFelmeddelande() != null ? error.getFelmeddelande() : "Okant fel";
+      String felkod = "OKAND";
+      String felmeddelande = "Okant fel";
+      if (result.getError() != null)
+      {
+         var error = result.getError();
+         if (error.getFelkod() != null)
+         {
+            felkod = error.getFelkod().getValue();
+         }
+         if (error.getFelmeddelande() != null)
+         {
+            felmeddelande = error.getFelmeddelande();
+         }
+      }
       LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
       HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
       errorInfo.setFelkod(felkod);
