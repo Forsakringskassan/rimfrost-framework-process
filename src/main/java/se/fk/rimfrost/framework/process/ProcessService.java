@@ -22,12 +22,12 @@ public class ProcessService
       return handlaggningId;
    }
 
-   public HandlaggningResponseMessageData endProcess(String handlaggningId, Utfall utfall)
+   public HandlaggningResponseMessageData endProcess(String handlaggningId, RegelProcessResult result)
    {
-      LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, utfall);
+      LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, result.getUtfall());
       HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
       response.setHandlaggningId(handlaggningId);
-      response.setResultat(utfall == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
+      response.setResultat(result.getUtfall() == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
       return response;
    }
 
