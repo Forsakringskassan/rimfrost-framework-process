@@ -3,6 +3,7 @@ package se.fk.rimfrost.framework.process;
 import se.fk.rimfrost.HandlaggningErrorInformation;
 import se.fk.rimfrost.HandlaggningRequestMessageData;
 import se.fk.rimfrost.HandlaggningResponseMessageData;
+import se.fk.rimfrost.framework.regel.Utfall;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class ProcessService
       LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, result.getUtfall());
       HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
       response.setHandlaggningId(handlaggningId);
-      response.setResultat(result.getUtfall() == se.fk.rimfrost.framework.regel.Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
+      response.setResultat(result.getUtfall() == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
       return response;
    }
 
