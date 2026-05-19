@@ -2,6 +2,31 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.4.0 (2026-05-19)
+
+### Other changes
+
+**fix/FKPOC-774: add Utfall import and simplify usage in endProcess**
+
+
+[98cd0](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/98cd06f87d55f65) Jorgen Lindstrom *2026-05-19 13:46:35*
+
+**feat/FKPOC-774: add endProcess with RegelProcessResult and remove old endProcessWithError**
+
+
+[0e966](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/0e966de075f6ad6) Jorgen Lindstrom *2026-05-19 13:39:52*
+
+**refactor/FKPOC-774: simplify error extraction in endProcessWithError**
+
+
+[3acc4](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/3acc464e11183b0) Jorgen Lindstrom *2026-05-19 12:42:29*
+
+**feat/FKPOC-774: update endProcessWithError to accept RegelProcessResult and extract error details internally**
+
+
+[13569](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/13569e7f4a1fe71) Jorgen Lindstrom *2026-05-19 11:41:00*
+
+
 ## 1.3.0 (2026-05-19)
 
 ### Other changes
