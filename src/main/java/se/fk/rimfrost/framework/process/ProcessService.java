@@ -21,6 +21,15 @@ public class ProcessService
       return handlaggningId;
    }
 
+   public HandlaggningResponseMessageData endProcess(String handlaggningId, RegelProcessResult result)
+   {
+      LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, result.getUtfall());
+      HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
+      response.setHandlaggningId(handlaggningId);
+      response.setResultat(result.getUtfall() == se.fk.rimfrost.framework.regel.Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
+      return response;
+   }
+
    public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult result)
    {
       String felkod = "OKAND";
@@ -37,19 +46,6 @@ public class ProcessService
             felmeddelande = error.getFelmeddelande();
          }
       }
-      LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
-      HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
-      errorInfo.setFelkod(felkod);
-      errorInfo.setFelmeddelande(felmeddelande);
-      HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
-      response.setHandlaggningId(handlaggningId);
-      response.setResultat("FEL");
-      response.setError(errorInfo);
-      return response;
-   }
-
-   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, String felkod, String felmeddelande)
-   {
       LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
       HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
       errorInfo.setFelkod(felkod);
