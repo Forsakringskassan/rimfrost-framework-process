@@ -22,22 +22,23 @@ public class ProcessService
       return handlaggningId;
    }
 
-   public HandlaggningResponseMessageData endProcess(String handlaggningId, RegelProcessResult result)
+   public HandlaggningResponseMessageData endProcess(String handlaggningId, RegelProcessResult regelProcessResult)
    {
-      LOGGER.info("Process for handlaggningId {} finished with result {}", handlaggningId, result.getUtfall());
+      LOGGER.info("Process for handlaggningId {} finished with regelProcessResult {}", handlaggningId,
+            regelProcessResult.getUtfall());
       HandlaggningResponseMessageData response = new HandlaggningResponseMessageData();
       response.setHandlaggningId(handlaggningId);
-      response.setResultat(result.getUtfall() == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
+      response.setResultat(regelProcessResult.getUtfall() == Utfall.JA ? "GODKÄND" : "EJ GODKÄND");
       return response;
    }
 
-   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult result)
+   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult regelProcessResult)
    {
       String felkod = "OKAND";
       String felmeddelande = "Okant fel";
-      if (result.getError() != null)
+      if (regelProcessResult.getError() != null)
       {
-         var error = result.getError();
+         var error = regelProcessResult.getError();
          if (error.getFelkod() != null)
          {
             felkod = error.getFelkod().getValue();
