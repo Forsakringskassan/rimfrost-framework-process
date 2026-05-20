@@ -2,6 +2,23 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.4.1 (2026-05-20)
+
+### Bug Fixes
+
+-  Add basic tests for rimfrost-framework-process ([d6c47](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d6c47f5d8a87c9e) Lars Persson)  
+
+### Dependency updates
+
+- add renovate.json ([e7c4f](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/e7c4f950be86996) renovate[bot])  
+### Other changes
+
+**refactor/FKPOC-774: rename parameter result to regelProcessResult in endProcess and endProcessWithError**
+
+
+[311c9](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/311c9db0e2ad1f1) Jorgen Lindstrom *2026-05-20 07:05:09*
+
+
 ## 1.4.0 (2026-05-19)
 
 ### Other changes
