@@ -4,6 +4,7 @@ import se.fk.rimfrost.HandlaggningErrorInformation;
 import se.fk.rimfrost.HandlaggningRequestMessageData;
 import se.fk.rimfrost.HandlaggningResponseMessageData;
 import se.fk.rimfrost.framework.regel.Utfall;
+import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +33,22 @@ public class ProcessService
       return response;
    }
 
-   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelProcessResult regelProcessResult)
+   public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelErrorInformation regelErrorInformation)
    {
       String felkod = "OKAND";
       String felmeddelande = "Okant fel";
-      if (regelProcessResult.getError() != null)
+      if (regelErrorInformation != null)
       {
-         var error = regelProcessResult.getError();
-         if (error.getFelkod() != null)
+         if (regelErrorInformation.getFelkod() != null)
          {
-            felkod = error.getFelkod().getValue();
+            felkod = regelErrorInformation.getFelkod().getValue();
          }
-         if (error.getFelmeddelande() != null)
+         if (regelErrorInformation.getFelmeddelande() != null)
          {
-            felmeddelande = error.getFelmeddelande();
+            felmeddelande = regelErrorInformation.getFelmeddelande();
          }
       }
-      LOGGER.error("Process for handlaggningId {} failed with error {}: {}", handlaggningId, felkod, felmeddelande);
+      LOGGER.error("Process for handlaggningId {} failed with regelErrorInformation {}: {}", handlaggningId, felkod, felmeddelande);
       HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
       errorInfo.setFelkod(felkod);
       errorInfo.setFelmeddelande(felmeddelande);
