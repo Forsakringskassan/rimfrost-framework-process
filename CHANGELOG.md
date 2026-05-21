@@ -2,6 +2,36 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.5.0 (2026-05-21)
+
+### Other changes
+
+**Merge branch 'feat/FKPOC-774-update-end-process-to-use-regel-process-result' of https://github.com/Forsakringskassan/rimfrost-framework-process into feat/FKPOC-774-update-end-process-to-use-regel-process-result**
+
+
+[7c04b](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/7c04b2173596845) Jorgen Lindstrom *2026-05-21 11:00:05*
+
+**refactor/FKPOC-774: improve error log message in endProcessWithError**
+
+
+[4ea63](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/4ea63898ec7320a) Jorgen Lindstrom *2026-05-21 10:55:52*
+
+**Merge branch 'main' into feat/FKPOC-774-update-end-process-to-use-regel-process-result**
+
+
+[44cc2](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/44cc2e95b94eabc) JorgenDuctus *2026-05-21 10:14:10*
+
+**fix/FKPOC-774: update ProcessServiceTest to pass RegelErrorInformation to endProcessWithError**
+
+
+[51716](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/51716c3435c06ed) Jorgen Lindstrom *2026-05-21 10:03:48*
+
+**feat/FKPOC-774: update endProcessWithError to accept RegelErrorInformation instead of RegelProcessResult**
+
+
+[68174](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/681748c8194d2dd) Jorgen Lindstrom *2026-05-21 08:52:37*
+
+
 ## 1.4.1 (2026-05-20)
 
 ### Bug Fixes
