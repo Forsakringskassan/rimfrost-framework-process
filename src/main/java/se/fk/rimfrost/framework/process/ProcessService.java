@@ -48,7 +48,8 @@ public class ProcessService
             felmeddelande = regelErrorInformation.getFelmeddelande();
          }
       }
-      LOGGER.error("Process for handlaggningId {} failed with regelErrorInformation {}: {}", handlaggningId, felkod, felmeddelande);
+      LOGGER.error("Process for handlaggningId {} failed with regelErrorInformation {}: {}", handlaggningId, felkod,
+            felmeddelande);
       HandlaggningErrorInformation errorInfo = new HandlaggningErrorInformation();
       errorInfo.setFelkod(felkod);
       errorInfo.setFelmeddelande(felmeddelande);
