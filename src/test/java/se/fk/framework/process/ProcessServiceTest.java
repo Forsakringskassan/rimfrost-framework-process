@@ -65,7 +65,7 @@ public class ProcessServiceTest
       felkod = "null".equals(felkod) ? null : felkod;
 
       var response = processService.endProcessWithError(handlaggningId,
-            new RegelProcessResult(Utfall.ERROR, createRegelErrorInformation(toRegelFelkod(felkod), felmeddelande)));
+            createRegelErrorInformation(toRegelFelkod(felkod), felmeddelande));
 
       var expectedFelkod = felkod != null ? felkod : "OKAND";
       var expectedFelmeddelande = felmeddelande != null ? felmeddelande : "Okant fel";
