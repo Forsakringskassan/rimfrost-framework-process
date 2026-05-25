@@ -5,6 +5,7 @@ import se.fk.rimfrost.HandlaggningRequestMessageData;
 import se.fk.rimfrost.HandlaggningResponseMessageData;
 import se.fk.rimfrost.framework.regel.Utfall;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
+import se.fk.rimfrost.framework.regel.error.RegelFelkod;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,13 +36,13 @@ public class ProcessService
 
    public HandlaggningResponseMessageData endProcessWithError(String handlaggningId, RegelErrorInformation regelErrorInformation)
    {
-      String felkod = "OKAND";
-      String felmeddelande = "Okant fel";
+      String felkod = RegelFelkod.RIMFROST_OTHER;
+      String felmeddelande = "Unknown error";
       if (regelErrorInformation != null)
       {
          if (regelErrorInformation.getFelkod() != null)
          {
-            felkod = regelErrorInformation.getFelkod().getValue();
+            felkod = regelErrorInformation.getFelkod();
          }
          if (regelErrorInformation.getFelmeddelande() != null)
          {

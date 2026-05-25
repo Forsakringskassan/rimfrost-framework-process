@@ -8,7 +8,7 @@ import se.fk.rimfrost.HandlaggningRequestMessageData;
 import se.fk.rimfrost.framework.process.ProcessService;
 import se.fk.rimfrost.framework.process.RegelProcessResult;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
-import se.fk.rimfrost.framework.regel.RegelFelkod;
+import se.fk.rimfrost.framework.regel.error.RegelFelkod;
 import se.fk.rimfrost.framework.regel.Utfall;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -65,10 +65,10 @@ public class ProcessServiceTest
       felkod = "null".equals(felkod) ? null : felkod;
 
       var response = processService.endProcessWithError(handlaggningId,
-            createRegelErrorInformation(toRegelFelkod(felkod), felmeddelande));
+            createRegelErrorInformation(felkod, felmeddelande));
 
-      var expectedFelkod = felkod != null ? felkod : "OKAND";
-      var expectedFelmeddelande = felmeddelande != null ? felmeddelande : "Okant fel";
+      var expectedFelkod = felkod != null ? felkod : RegelFelkod.RIMFROST_OTHER;
+      var expectedFelmeddelande = felmeddelande != null ? felmeddelande : "Unknown error";
 
       assertEquals(handlaggningId, response.getHandlaggningId());
       assertEquals("FEL", response.getResultat());
@@ -77,14 +77,7 @@ public class ProcessServiceTest
       assertEquals(expectedFelmeddelande, response.getError().getFelmeddelande());
    }
 
-   private RegelFelkod toRegelFelkod(String felkod)
-   {
-      if(felkod==null){return null;}
-
-      return switch(felkod){case"HANDLAGGNING_READ_FAILURE"->RegelFelkod.HANDLAGGNING_READ_FAILURE;case"HANDLAGGNING_WRITE_FAILURE"->RegelFelkod.HANDLAGGNING_WRITE_FAILURE;case"OTHER"->RegelFelkod.OTHER;default->throw new IllegalArgumentException("Unknown felkod: "+felkod);};
-   }
-
-   private RegelErrorInformation createRegelErrorInformation(RegelFelkod felkod, String felmeddelande)
+   private RegelErrorInformation createRegelErrorInformation(String felkod, String felmeddelande)
    {
       var regelErrorInformation = new RegelErrorInformation();
       regelErrorInformation.setFelkod(felkod);
