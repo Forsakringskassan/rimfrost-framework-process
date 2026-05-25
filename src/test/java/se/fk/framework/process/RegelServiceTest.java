@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import se.fk.rimfrost.framework.process.RegelService;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
-import se.fk.rimfrost.framework.regel.RegelFelkod;
+import se.fk.rimfrost.framework.regel.error.RegelFelkod;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
 import se.fk.rimfrost.framework.regel.Utfall;
 
@@ -50,7 +50,7 @@ public class RegelServiceTest
       if (hasError)
       {
          regelErrorInformation = new RegelErrorInformation();
-         regelErrorInformation.setFelkod(RegelFelkod.OTHER);
+         regelErrorInformation.setFelkod(RegelFelkod.RIMFROST_OTHER);
          regelErrorInformation.setFelmeddelande("Felmeddelande");
       }
 
