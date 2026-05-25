@@ -2,6 +2,13 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.5.1 (2026-05-25)
+
+### Bug Fixes
+
+-  Bump rimfrost-framework-regel-asyncapi version ([cf667](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/cf6671fdb0aac1a) Lars Persson)  
+-  **deps**  update dependency se.fk.rimfrost:rimfrost-process-asyncapi to v1.2.0 ([8c697](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/8c6979ef8898127) renovate[bot])  
+
 ## 1.5.0 (2026-05-21)
 
 ### Other changes
