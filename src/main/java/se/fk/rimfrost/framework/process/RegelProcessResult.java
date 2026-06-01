@@ -1,11 +1,13 @@
 package se.fk.rimfrost.framework.process;
 
+import java.io.Serializable;
+
 import edu.umd.cs.findbugs.annotations.Nullable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.Utfall;
 
-public class RegelProcessResult
+public class RegelProcessResult implements Serializable
 {
    private final Utfall utfall;
 
