@@ -2,7 +2,21 @@
 
 Changelog of rimfrost-framework-process.
 
-## 1.5.3 (2026-06-02)
+## 1.6.0 (2026-06-10)
+
+### Features
+
+-  bump version ([65f0b](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/65f0b3b17289dd5) Nils Elveros)  
+
+### Bug Fixes
+
+-  bump version ([0014a](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/0014a99c777181d) Nils Elveros)  
+-  add app properties to test ([d6ee9](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d6ee9fe6abd44cf) Nils Elveros)  
+-  spotless ([2bb9f](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/2bb9f3c4973a58b) Nils Elveros)  
+-  add responseTopicName prop ([c3022](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/c3022bd699c0dc8) Nils Elveros)  
+-  **deps**  update dependency se.fk.rimfrost.framework.regel.error:rimfrost-framework-regel-error-codes to v0.0.3 ([51705](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/51705683b52f86d) renovate[bot])  
+
+## rimfrost-1.1 (2026-06-02)
 
 ### Bug Fixes
 
