@@ -12,7 +12,7 @@ import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
 public class RegelService
 {
 
-   @ConfigProperty(name = "RESPONSE_TOPIC_NAME") 
+   @ConfigProperty(name = "RESPONSE_TOPIC_NAME")
    String reponseTopicName;
 
    private static final Logger LOGGER = LoggerFactory.getLogger(RegelService.class);
