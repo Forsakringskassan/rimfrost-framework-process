@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.1 (2026-06-10)
+
+### Bug Fixes
+
+-  bump regel asyncapi ([6df61](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/6df611ee0b7bbbf) Nils Elveros)  
+
 ## 1.6.0 (2026-06-10)
 
 ### Features
