@@ -1,10 +1,11 @@
 package se.fk.rimfrost.framework.process;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import se.fk.rimfrost.framework.regel.RegelRequestMessagePayloadData;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
 
@@ -12,8 +13,8 @@ import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
 public class RegelService
 {
 
-   @ConfigProperty(name = "RESPONSE_TOPIC_NAME")
-   String reponseTopicName;
+   @Inject
+   Config config;
 
    private static final Logger LOGGER = LoggerFactory.getLogger(RegelService.class);
 
@@ -23,14 +24,19 @@ public class RegelService
       return new RegelProcessResult(response.getUtfall(), response.getError());
    }
 
-   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId)
+   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId,
+         String responseTopicProperty)
    {
-      LOGGER.info("Created RegelRequest with handlaggningId: {} and aktivitetId: {}", handlaggningId, aktivitetId);
-      RegelRequestMessagePayloadData requestMessageData = new RegelRequestMessagePayloadData();
+      LOGGER.info("Starting create RegelRequest for handlaggningId: {}, aktivitetId: {}, responseTopicProperty: {}",
+            handlaggningId, aktivitetId, responseTopicProperty);
+      String responseTopicName = config.getValue(responseTopicProperty, String.class);
 
+      LOGGER.info("Created RegelRequest with handlaggningId: {} and aktivitetId: {}. replyTo: {}", handlaggningId,
+            aktivitetId, responseTopicName);
+      RegelRequestMessagePayloadData requestMessageData = new RegelRequestMessagePayloadData();
       requestMessageData.setHandlaggningId(handlaggningId);
       requestMessageData.setAktivitetId(aktivitetId);
-      requestMessageData.setReplyTo(reponseTopicName);
+      requestMessageData.setReplyTo(responseTopicName);
       return requestMessageData;
    }
 
