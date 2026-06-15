@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.2 (2026-06-15)
+
+### Bug Fixes
+
+-  add responseTopicProperty to regelservice ([41a25](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/41a25316dfb213d) Nils Elveros)  
+
 ## 1.6.1 (2026-06-10)
 
 ### Bug Fixes
