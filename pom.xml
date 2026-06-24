@@ -39,6 +39,11 @@
       <artifactId>rimfrost-framework-regel-error-codes</artifactId>
       <version>0.0.3</version>
     </dependency>
+    <dependency>
+      <groupId>org.kie.kogito</groupId>
+      <artifactId>kogito-api</artifactId>
+      <version>${version.org.kie.kogito}</version>
+    </dependency>
   </dependencies>
 
   <repositories>
