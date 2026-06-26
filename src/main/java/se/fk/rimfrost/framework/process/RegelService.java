@@ -1,13 +1,16 @@
 package se.fk.rimfrost.framework.process;
 
 import org.eclipse.microprofile.config.Config;
+import org.kie.kogito.internal.process.runtime.KogitoProcessContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.RegelRequestMessagePayloadData;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
+import se.fk.rimfrost.framework.regel.Utfall;
 
 @ApplicationScoped
 public class RegelService
@@ -40,4 +43,23 @@ public class RegelService
       return requestMessageData;
    }
 
+   public RegelProcessResult handleError(String handlaggningId, RegelResponseMessagePayloadData response)
+   {
+      LOGGER.error("Received error response for handlaggningId: {}, with error: {}", handlaggningId, response.getError());
+      return new RegelProcessResult(Utfall.ERROR, response.getError());
+   }
+
+   public RegelProcessResult handleTimeout(String handlaggningId, RegelRequestMessagePayloadData request)
+   {
+      LOGGER.error("Timeout for handlaggningId: {}, on the request: {}", handlaggningId, request);
+      RegelErrorInformation regelErrorInformation = new RegelErrorInformation();
+      regelErrorInformation.setFelkod("TIMEOUT");
+      regelErrorInformation.setFelmeddelande("Timeout while waiting for response from regel");
+      return new RegelProcessResult(Utfall.ERROR, regelErrorInformation);
+   }
+
+   public void init(KogitoProcessContext kcontext)
+   {
+      kcontext.setVariable("attempts", 0);
+   }
 }
