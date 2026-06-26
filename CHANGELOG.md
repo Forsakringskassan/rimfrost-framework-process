@@ -2,6 +2,14 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.3 (2026-06-26)
+
+### Bug Fixes
+
+-  add repo ([65422](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/6542275c317be9d) Nils Elveros)  
+-  update to return RegelProcessResult ([81052](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/810529ca788008b) Nils Elveros)  
+-  add handleError, handleTimeout and init methods ([cf083](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/cf0832760feb2cd) Nils Elveros)  
+
 ## 1.6.2 (2026-06-15)
 
 ### Bug Fixes
