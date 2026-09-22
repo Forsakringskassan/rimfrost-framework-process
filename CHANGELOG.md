@@ -2,6 +2,11 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.4 (2026-08-29)
+
+### Dependency updates
+
+- pin forsakringskassan/.github action to d1349e6 ([42054](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/420548e79ef8405) renovate[bot])  
 ## 1.6.3 (2026-06-26)
 
 ### Bug Fixes
