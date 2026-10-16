@@ -76,7 +76,15 @@ public class ProcessbeskrivningReaderTest
             Arguments.of(
                   "{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[" + STEG_A
                         + ",{\"id\":\"b\",\"rubrik\":\"B\",\"aktiviteter\":[\"D4AB4820-68D9-41E0-ABE1-CD8F9865D275\"]}]}",
-                  "is already used in steg[0]"));
+                  "is already used in steg[0]"),
+            Arguments.of("{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[null]}",
+                  "steg[0] is empty"),
+            Arguments.of(
+                  "{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[null]}]}",
+                  "aktivitets-ID 'null' is not a valid UUID"),
+            Arguments.of(
+                  "{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\"1-2-3-4-5\"]}]}",
+                  "'1-2-3-4-5' is not a valid UUID"));
    }
 
    @ParameterizedTest

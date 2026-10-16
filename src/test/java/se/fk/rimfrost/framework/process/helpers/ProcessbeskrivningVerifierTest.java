@@ -50,7 +50,24 @@ public class ProcessbeskrivningVerifierTest
       assertThatThrownBy(() -> ProcessbeskrivningVerifier.readAktivitetIds("processvy/aktivitet-fran-variabel.bpmn"))
             .isInstanceOf(AssertionError.class)
             .hasMessageContaining("must be assigned a fixed aktivitets-ID")
-            .hasMessageContaining("_IN_AKTIVITET_1");
+            .hasMessageContaining("_IN_AKTIVITET_1")
+            .hasMessageContaining("_IN_AKTIVITET_2");
+   }
+
+   @Test
+   public void should_fail_when_process_id_differs_from_processbeskrivning()
+   {
+      assertThatThrownBy(
+            () -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/annan-process.bpmn"))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("processId in processbeskrivning.json is test")
+            .hasMessageContaining("is annan");
+   }
+
+   @Test
+   public void should_read_process_id_in_bpmn()
+   {
+      assertThat(ProcessbeskrivningVerifier.readProcessId("processvy/test.bpmn")).isEqualTo("test");
    }
 
    @Test

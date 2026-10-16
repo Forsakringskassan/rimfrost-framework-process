@@ -95,6 +95,11 @@ public final class ProcessbeskrivningReader
       {
          Processbeskrivning.Steg steg = processbeskrivning.steg().get(i);
          String stegRef = "steg[" + i + "]";
+         if (steg == null)
+         {
+            errors.add(stegRef + " is empty");
+            continue;
+         }
          if (isBlank(steg.id()))
          {
             errors.add(stegRef + ": 'id' is missing");
@@ -129,7 +134,7 @@ public final class ProcessbeskrivningReader
       return errors;
    }
 
-   static UUID parseUuid(String value)
+   public static UUID parseUuid(String value)
    {
       if (value == null)
       {
@@ -137,7 +142,8 @@ public final class ProcessbeskrivningReader
       }
       try
       {
-         return UUID.fromString(value.trim());
+         UUID uuid = UUID.fromString(value.trim());
+         return uuid.toString().equalsIgnoreCase(value.trim()) ? uuid : null;
       }
       catch (IllegalArgumentException e)
       {

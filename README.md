@@ -5,6 +5,7 @@
 `ProcessService` innehåller metoden `endProcessWithError(String handlaggningId, String felkod, String felmeddelande)`
 som bygger ett `HandlaggningResponseMessageData` med `resultat: "FEL"` och ett populerat `error`-objekt.
 Används av processer som behöver avsluta med ett strukturerat felmeddelande på Kafka.
+
 ## Processvy
 
 Varje process har en processvy (stegindikatorn) som visar handläggaren var i processen en uppgift befinner sig. Ramverket skickar processvy-länken i alla regelanrop och svarar på vilka steg processen har. Processen bidrar bara med sin konfiguration och sin processbeskrivning. Kraven finns i [docs/krav.md](docs/krav.md).
@@ -82,4 +83,4 @@ void processbeskrivning_should_contain_all_aktiviteter()
 }
 ```
 
-Testet går sönder om en aktivitet i BPMN-filen saknas i processbeskrivningen, om BPMN-filen saknar aktiviteter eller om en aktivitets `aktivitetId` inte tilldelas ett fast värde.
+Testet går sönder om en aktivitet i BPMN-filen saknas i processbeskrivningen, om `processId` inte är samma som processens id i BPMN-filen, om BPMN-filen saknar aktiviteter eller om en aktivitets `aktivitetId` inte tilldelas ett fast värde.

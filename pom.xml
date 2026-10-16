@@ -89,6 +89,9 @@
               <includes>
                 <include>**/helpers/</include>
               </includes>
+              <excludes>
+                <exclude>**/*Test.class</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>

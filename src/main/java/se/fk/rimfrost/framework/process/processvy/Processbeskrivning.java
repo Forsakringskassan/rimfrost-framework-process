@@ -1,5 +1,7 @@
 package se.fk.rimfrost.framework.process.processvy;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -24,7 +26,7 @@ public final class Processbeskrivning
    {
       this.processId = processId;
       this.processnamn = processnamn;
-      this.steg = steg == null ? null : List.copyOf(steg);
+      this.steg = steg == null ? null : Collections.unmodifiableList(new ArrayList<>(steg));
    }
 
    public String processId()
@@ -37,7 +39,7 @@ public final class Processbeskrivning
       return processnamn;
    }
 
-   @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Listan är oföränderlig (List.copyOf)")
+   @SuppressFBWarnings(value = "EI_EXPOSE_REP", justification = "Listan är oföränderlig")
    public List<Steg> steg()
    {
       return steg;
@@ -59,7 +61,7 @@ public final class Processbeskrivning
          this.id = id;
          this.rubrik = rubrik;
          this.beskrivning = beskrivning;
-         this.aktiviteter = aktiviteter == null ? null : List.copyOf(aktiviteter);
+         this.aktiviteter = aktiviteter == null ? null : Collections.unmodifiableList(new ArrayList<>(aktiviteter));
       }
 
       public String id()

@@ -8,6 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,6 +59,13 @@ public final class ProcessbeskrivningVerifier
       processbeskrivning.steg()
             .forEach(steg -> steg.aktiviteter().forEach(aktivitet -> beskrivnaAktiviteter.add(normalize(aktivitet))));
 
+      String bpmnProcessId = readProcessId(bpmnResource);
+      if (!processbeskrivning.processId().equals(bpmnProcessId))
+      {
+         throw new AssertionError("processId in " + processbeskrivningResource + " is "
+               + processbeskrivning.processId() + " but the process id in " + bpmnResource + " is " + bpmnProcessId);
+      }
+
       Set<String> bpmnAktiviteter = readAktivitetIds(bpmnResource);
       if (bpmnAktiviteter.isEmpty())
       {
@@ -73,6 +81,20 @@ public final class ProcessbeskrivningVerifier
          throw new AssertionError("Aktivitets-ID in " + bpmnResource + " missing in " + processbeskrivningResource
                + ": " + String.join(", ", saknade));
       }
+   }
+
+   /**
+    * Läser processens id ({@code bpmn2:process/@id}) i BPMN-filen.
+    */
+   public static String readProcessId(String bpmnResource)
+   {
+      NodeList processes = parse(bpmnResource).getElementsByTagNameNS(BPMN_NAMESPACE, "process");
+      if (processes.getLength() != 1)
+      {
+         throw new AssertionError("Expected exactly one process in " + bpmnResource + " but found "
+               + processes.getLength());
+      }
+      return ((Element) processes.item(0)).getAttribute("id");
    }
 
    /**
@@ -96,6 +118,7 @@ public final class ProcessbeskrivningVerifier
 
       Set<String> aktivitetIds = new LinkedHashSet<>();
       List<String> utanFastVarde = new ArrayList<>();
+      Set<String> tilldelade = new HashSet<>();
       NodeList associations = document.getElementsByTagNameNS(BPMN_NAMESPACE, "dataInputAssociation");
       for (int i = 0; i < associations.getLength(); i++)
       {
@@ -105,6 +128,7 @@ public final class ProcessbeskrivningVerifier
          {
             continue;
          }
+         tilldelade.add(targetRef);
          NodeList froms = association.getElementsByTagNameNS(BPMN_NAMESPACE, "from");
          String value = froms.getLength() > 0 ? froms.item(0).getTextContent().trim() : "";
          if (value.isEmpty())
@@ -116,6 +140,10 @@ public final class ProcessbeskrivningVerifier
             aktivitetIds.add(value);
          }
       }
+      aktivitetInputIds.stream()
+            .filter(inputId -> !tilldelade.contains(inputId))
+            .sorted()
+            .forEach(utanFastVarde::add);
       if (!utanFastVarde.isEmpty())
       {
          throw new AssertionError("'" + AKTIVITET_ID_INPUT + "' in " + bpmnResource
@@ -153,6 +181,7 @@ public final class ProcessbeskrivningVerifier
 
    private static String normalize(String aktivitetId)
    {
-      return aktivitetId.trim().toLowerCase(Locale.ROOT);
+      UUID uuid = ProcessbeskrivningReader.parseUuid(aktivitetId);
+      return uuid != null ? uuid.toString() : aktivitetId.trim().toLowerCase(Locale.ROOT);
    }
 }

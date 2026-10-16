@@ -4,6 +4,7 @@
     <bpmn2:callActivity id="_CALL_1" name="Regel 1" calledElement="regel_1">
       <bpmn2:ioSpecification id="_IO_1">
         <bpmn2:dataInput id="_IN_AKTIVITET_1" name="aktivitetId" />
+        <bpmn2:dataInput id="_IN_AKTIVITET_2" name="aktivitetId" />
       </bpmn2:ioSpecification>
       <bpmn2:dataInputAssociation id="_ASSOC_AKTIVITET_1">
         <bpmn2:sourceRef>aktivitetId</bpmn2:sourceRef>
