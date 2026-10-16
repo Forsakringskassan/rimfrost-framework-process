@@ -33,6 +33,7 @@ public class RegelServiceTest
       assertNotNull(request);
       assertEquals(handlaggningId, request.getHandlaggningId());
       assertEquals(aktivitetId, request.getAktivitetId());
+      assertEquals("/process/test", request.getProcessvyUrl());
    }
 
    @ParameterizedTest

@@ -1,0 +1,30 @@
+{
+  "processId": "test",
+  "processnamn": "Testprocess",
+  "steg": [
+    {
+      "id": "kontrollera-ratt-till-forsakring",
+      "rubrik": "Kontrollera rätt till försäkring",
+      "beskrivning": "Handläggaren kontrollerar att den försäkrade har rätt till ersättning.",
+      "aktiviteter": [
+        "8d2f3c1e-1b7a-4c5e-9f0a-2b3c4d5e6f70",
+        "1c9e7a54-3d2b-4f6a-8e1c-0a9b8c7d6e5f"
+      ]
+    },
+    {
+      "id": "berakna-ersattning",
+      "rubrik": "Beräkna ersättning",
+      "aktiviteter": [
+        "5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"
+      ]
+    },
+    {
+      "id": "bekrafta-beslut",
+      "rubrik": "Bekräfta beslut",
+      "beskrivning": "Handläggaren bekräftar beslutet.",
+      "aktiviteter": [
+        "d4ab4820-68d9-41e0-abe1-cd8f9865d275"
+      ]
+    }
+  ]
+}

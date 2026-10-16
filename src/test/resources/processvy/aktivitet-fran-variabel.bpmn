@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" id="_test" targetNamespace="http://www.omg.org/bpmn20">
+  <bpmn2:process id="test" name="test" isExecutable="true">
+    <bpmn2:callActivity id="_CALL_1" name="Regel 1" calledElement="regel_1">
+      <bpmn2:ioSpecification id="_IO_1">
+        <bpmn2:dataInput id="_IN_AKTIVITET_1" name="aktivitetId" />
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_ASSOC_AKTIVITET_1">
+        <bpmn2:sourceRef>aktivitetId</bpmn2:sourceRef>
+        <bpmn2:targetRef>_IN_AKTIVITET_1</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:callActivity>
+  </bpmn2:process>
+</bpmn2:definitions>

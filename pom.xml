@@ -27,7 +27,7 @@
     <dependency>
       <groupId>se.fk.rimfrost.framework.regel</groupId>
       <artifactId>rimfrost-framework-regel-asyncapi</artifactId>
-      <version>1.1.4</version>
+      <version>1.2.0</version>
     </dependency>
     <dependency>
       <groupId>se.fk.rimfrost</groupId>
@@ -38,6 +38,15 @@
       <groupId>se.fk.rimfrost.framework.regel.error</groupId>
       <artifactId>rimfrost-framework-regel-error-codes</artifactId>
       <version>0.0.3</version>
+    </dependency>
+    <dependency>
+      <groupId>se.fk.rimfrost.framework.process</groupId>
+      <artifactId>rimfrost-framework-process-openapi-jaxrs-spec</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-validator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.kie.kogito</groupId>
@@ -64,5 +73,27 @@
       <url>https://repository.apache.org/snapshots</url>
     </repository>
   </repositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.5.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+            <configuration>
+              <includes>
+                <include>**/helpers/</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
