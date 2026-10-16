@@ -19,7 +19,7 @@ public class ProcessbeskrivningReaderTest
    @Test
    public void should_read_processbeskrivning_from_resources()
    {
-      var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE);
+      var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE).orElseThrow();
 
       assertThat(processbeskrivning.processId()).isEqualTo("test");
       assertThat(processbeskrivning.processnamn()).isEqualTo("Testprocess");
@@ -30,12 +30,18 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
-   public void should_fail_when_processbeskrivning_is_missing()
+   public void should_return_empty_when_processbeskrivning_is_missing()
    {
-      assertThatThrownBy(() -> ProcessbeskrivningReader.readResource("saknas.json"))
+      assertThat(ProcessbeskrivningReader.readResource("saknas.json")).isEmpty();
+   }
+
+   @Test
+   public void should_fail_when_processbeskrivning_resource_is_invalid()
+   {
+      assertThatThrownBy(() -> ProcessbeskrivningReader.readResource("processvy/ogiltig-processbeskrivning.json"))
             .isInstanceOf(ProcessbeskrivningException.class)
-            .hasMessageContaining("Processbeskrivning is missing")
-            .hasMessageContaining("saknas.json");
+            .hasMessageContaining("Processbeskrivning processvy/ogiltig-processbeskrivning.json is invalid")
+            .hasMessageContaining("'steg' must contain at least one steg");
    }
 
    static Stream<Arguments> invalidProcessbeskrivningar()

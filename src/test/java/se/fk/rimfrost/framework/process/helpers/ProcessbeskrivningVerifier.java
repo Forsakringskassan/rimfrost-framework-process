@@ -54,7 +54,9 @@ public final class ProcessbeskrivningVerifier
 
    public static void assertAllAktiviteterInProcessbeskrivning(String bpmnResource, String processbeskrivningResource)
    {
-      Processbeskrivning processbeskrivning = ProcessbeskrivningReader.readResource(processbeskrivningResource);
+      Processbeskrivning processbeskrivning = ProcessbeskrivningReader.readResource(processbeskrivningResource)
+            .orElseThrow(() -> new AssertionError("Processbeskrivning is missing: could not find "
+                  + processbeskrivningResource + " in the process resources (src/main/resources)"));
       Set<String> beskrivnaAktiviteter = new HashSet<>();
       processbeskrivning.steg()
             .forEach(steg -> steg.aktiviteter().forEach(aktivitet -> beskrivnaAktiviteter.add(normalize(aktivitet))));

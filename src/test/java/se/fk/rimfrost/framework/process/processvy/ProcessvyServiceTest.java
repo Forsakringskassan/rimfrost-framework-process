@@ -1,7 +1,6 @@
 package se.fk.rimfrost.framework.process.processvy;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,7 +29,7 @@ public class ProcessvyServiceTest
    @Test
    public void should_return_processvy_url_from_config()
    {
-      assertThat(processvyService.getProcessvyUrl()).isEqualTo("/process/test");
+      assertThat(processvyService.getProcessvyUrl()).contains("/process/test");
    }
 
    @ParameterizedTest
@@ -66,25 +65,42 @@ public class ProcessvyServiceTest
    {
          "", " "
    })
-   public void should_fail_when_processvy_url_is_blank(String processvyUrl)
+   public void should_start_without_processvy_url_when_blank(String processvyUrl)
    {
-      assertProcessvyUrlMissing(Optional.of(processvyUrl));
+      var service = new ProcessvyService();
+      service.init(Optional.of(processvyUrl),
+            ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE));
+
+      assertThat(service.getProcessvyUrl()).isEmpty();
    }
 
    @Test
-   public void should_fail_when_processvy_url_is_missing()
+   public void should_start_without_processvy_url_when_missing()
    {
-      assertProcessvyUrlMissing(Optional.empty());
+      var service = new ProcessvyService();
+      service.init(Optional.empty(), ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE));
+
+      assertThat(service.getProcessvyUrl()).isEmpty();
+      assertThat(service.getSteg(UUID.fromString("5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"))).isPresent();
    }
 
-   private void assertProcessvyUrlMissing(Optional<String> processvyUrl)
+   @Test
+   public void should_start_without_processbeskrivning_and_return_empty_steg()
    {
-      var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE);
       var service = new ProcessvyService();
+      service.init(Optional.of("/process/test"), Optional.empty());
 
-      assertThatThrownBy(() -> service.init(processvyUrl, processbeskrivning))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("Processvy-länk is missing")
-            .hasMessageContaining(ProcessvyService.PROCESSVY_URL_PROPERTY);
+      assertThat(service.getProcessvyUrl()).contains("/process/test");
+      assertThat(service.getSteg(UUID.fromString("5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"))).isEmpty();
+   }
+
+   @Test
+   public void should_start_without_processvy_url_and_processbeskrivning()
+   {
+      var service = new ProcessvyService();
+      service.init(Optional.empty(), Optional.empty());
+
+      assertThat(service.getProcessvyUrl()).isEmpty();
+      assertThat(service.getSteg(UUID.randomUUID())).isEmpty();
    }
 }

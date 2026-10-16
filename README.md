@@ -8,23 +8,23 @@ Används av processer som behöver avsluta med ett strukturerat felmeddelande p�
 
 ## Processvy
 
-Varje process har en processvy (stegindikatorn) som visar handläggaren var i processen en uppgift befinner sig. Ramverket skickar processvy-länken i alla regelanrop och svarar på vilka steg processen har. Processen bidrar bara med sin konfiguration och sin processbeskrivning. Kraven finns i [docs/krav.md](docs/krav.md).
+En process kan ha en processvy (stegindikatorn) som visar handläggaren var i processen en uppgift befinner sig. Ramverket skickar processvy-länken i regelanropen och svarar på vilka steg processen har. Processen bidrar bara med sin konfiguration och sin processbeskrivning. Kraven finns i [docs/krav.md](docs/krav.md).
 
-Processen startar inte om länken saknas, eller om processbeskrivningen saknas eller är ogiltig. Felmeddelandet säger vad som saknas.
+Både länken och processbeskrivningen är valfria. Saknas länken skickas regelanropen utan `processvyUrl`, och saknas processbeskrivningen svarar steg-endpointen `404`. Processen startar som vanligt i båda fallen, och loggar vid start om processvyn är konfigurerad. Finns processbeskrivningen men är ogiltig startar processen inte, och felmeddelandet säger vad som är fel.
 
 ### Processvy-länk
 
-Länken till processens processvy anges i processens `application.properties`, i samma format som en uppgifts `url`:
+Länken till processens processvy anges (valfritt) i processens `application.properties`, i samma format som en uppgifts `url`:
 
 ```properties
 PROCESSVY_URL=/process/vah
 ```
 
-`RegelService.createRegelRequest` sätter länken som `processvyUrl` i regelanropet.
+`RegelService.createRegelRequest` sätter länken som `processvyUrl` i regelanropet. Saknas länken sätts inte `processvyUrl`.
 
 ### Processbeskrivning
 
-Processbeskrivningen är filen `processbeskrivning.json` i processens resurser (`src/main/resources/processbeskrivning.json`, bredvid BPMN-filen). Den listar processens steg i den ordning de visas, och vilka aktivitets-ID:n som hör till varje steg:
+Processbeskrivningen är den valfria filen `processbeskrivning.json` i processens resurser (`src/main/resources/processbeskrivning.json`, bredvid BPMN-filen). Den listar processens steg i den ordning de visas, och vilka aktivitets-ID:n som hör till varje steg:
 
 ```json
 {
@@ -55,13 +55,13 @@ Okända fält ger fel, så att felstavningar upptäcks när processen startar.
 
 ### Steg-endpoint
 
-`GET /processvy/steg?aktivitetId={uuid}` implementerar kontraktet i [rimfrost-framework-process-openapi](https://github.com/Forsakringskassan/rimfrost-framework-process-openapi). Steget som innehåller aktiviteten är `PAGAR`, tidigare steg `KLAR` och senare steg `KOMMANDE`. Ett aktivitets-ID som inte finns i processbeskrivningen ger `404`, och ett saknat eller ogiltigt aktivitets-ID ger `400`.
+`GET /processvy/steg?aktivitetId={uuid}` implementerar kontraktet i [rimfrost-framework-process-openapi](https://github.com/Forsakringskassan/rimfrost-framework-process-openapi). Steget som innehåller aktiviteten är `PAGAR`, tidigare steg `KLAR` och senare steg `KOMMANDE`. Ett aktivitets-ID som inte finns i processbeskrivningen ger `404`, liksom alla anrop om processen saknar processbeskrivning, och ett saknat eller ogiltigt aktivitets-ID ger `400`.
 
 Endpointen ligger under `/processvy` och krockar därför inte med Kogitos genererade endpoints under `/{processId}`. Ingen process får därför heta `processvy`. Endpointen kommer med automatiskt i processer som indexerar ramverket (`quarkus.index-dependency.rimfrost-framework-process`).
 
 ### Testhjälpmedel
 
-Ramverkets test-jar innehåller `ProcessbeskrivningVerifier`, som kontrollerar att varje aktivitets-ID i en BPMN-fil finns i processbeskrivningen. Lägg till test-jar:en i processens `pom.xml`:
+Ramverkets test-jar innehåller `ProcessbeskrivningVerifier`, som kontrollerar att varje aktivitets-ID i en BPMN-fil finns i processbeskrivningen. Den är till för processer som har en processbeskrivning. Lägg till test-jar:en i processens `pom.xml`:
 
 ```xml
 <dependency>

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,17 +29,20 @@ public final class ProcessbeskrivningReader
    {
    }
 
-   public static Processbeskrivning readResource(String resource)
+   /**
+    * Läser processbeskrivningen från resursen. Saknas resursen returneras {@link Optional#empty()}, eftersom
+    * processbeskrivningen är valfri. Finns den men är ogiltig kastas {@link ProcessbeskrivningException}.
+    */
+   public static Optional<Processbeskrivning> readResource(String resource)
    {
       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
       try (InputStream inputStream = classLoader.getResourceAsStream(resource))
       {
          if (inputStream == null)
          {
-            throw new ProcessbeskrivningException("Processbeskrivning is missing: could not find " + resource
-                  + " in the process resources (src/main/resources)");
+            return Optional.empty();
          }
-         return read(inputStream, resource);
+         return Optional.of(read(inputStream, resource));
       }
       catch (IOException e)
       {

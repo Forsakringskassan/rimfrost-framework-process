@@ -77,4 +77,14 @@ public class ProcessbeskrivningVerifierTest
             .isInstanceOf(AssertionError.class)
             .hasMessageContaining("Could not find processvy/saknas.bpmn");
    }
+
+   @Test
+   public void should_fail_when_processbeskrivning_is_missing()
+   {
+      assertThatThrownBy(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/test.bpmn",
+            "processvy/saknas.json"))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("Processbeskrivning is missing")
+            .hasMessageContaining("processvy/saknas.json");
+   }
 }

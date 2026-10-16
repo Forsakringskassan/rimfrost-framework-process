@@ -44,7 +44,7 @@ public class RegelService
       requestMessageData.setHandlaggningId(handlaggningId);
       requestMessageData.setAktivitetId(aktivitetId);
       requestMessageData.setReplyTo(responseTopicName);
-      requestMessageData.setProcessvyUrl(processvyService.getProcessvyUrl());
+      processvyService.getProcessvyUrl().ifPresent(requestMessageData::setProcessvyUrl);
       return requestMessageData;
    }
 

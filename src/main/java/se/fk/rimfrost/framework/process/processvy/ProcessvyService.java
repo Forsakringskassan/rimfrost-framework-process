@@ -19,8 +19,9 @@ import se.fk.rimfrost.framework.process.jaxrsspec.controllers.generatedsource.mo
 import se.fk.rimfrost.framework.process.jaxrsspec.controllers.generatedsource.model.StegStatus;
 
 /**
- * Håller processens processvy-länk och processbeskrivning. Båda läses och valideras när processen startar, så att en
- * process utan länk eller med en saknad eller ogiltig processbeskrivning inte startar.
+ * Håller processens processvy-länk och processbeskrivning. Båda är valfria: saknas länken skickas regelanropen utan
+ * {@code processvyUrl}, och saknas processbeskrivningen svarar {@link #getSteg(UUID)} tomt. En processbeskrivning som
+ * finns men är ogiltig gör att processen inte startar.
  */
 @Startup
 @ApplicationScoped
@@ -33,9 +34,9 @@ public class ProcessvyService
    @ConfigProperty(name = PROCESSVY_URL_PROPERTY)
    Optional<String> processvyUrlConfig;
 
-   private String processvyUrl;
+   private Optional<String> processvyUrl;
 
-   private Processbeskrivning processbeskrivning;
+   private Optional<Processbeskrivning> processbeskrivning;
 
    private Map<UUID, Integer> stegIndexPerAktivitet;
 
@@ -45,27 +46,44 @@ public class ProcessvyService
       init(processvyUrlConfig, ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE));
    }
 
-   void init(Optional<String> processvyUrlConfig, Processbeskrivning processbeskrivning)
+   void init(Optional<String> processvyUrlConfig, Optional<Processbeskrivning> processbeskrivning)
    {
-      this.processvyUrl = processvyUrlConfig
-            .filter(url -> !url.isBlank())
-            .orElseThrow(() -> new IllegalStateException("Processvy-länk is missing: set " + PROCESSVY_URL_PROPERTY
-                  + " in the process application.properties, for example " + PROCESSVY_URL_PROPERTY + "=/process/vah"));
+      this.processvyUrl = processvyUrlConfig.filter(url -> !url.isBlank());
       this.processbeskrivning = processbeskrivning;
       this.stegIndexPerAktivitet = new HashMap<>();
-      List<Processbeskrivning.Steg> steg = processbeskrivning.steg();
-      for (int i = 0; i < steg.size(); i++)
-      {
-         for (String aktivitet : steg.get(i).aktiviteter())
+      processbeskrivning.ifPresent(beskrivning -> {
+         List<Processbeskrivning.Steg> steg = beskrivning.steg();
+         for (int i = 0; i < steg.size(); i++)
          {
-            stegIndexPerAktivitet.put(ProcessbeskrivningReader.parseUuid(aktivitet), i);
+            for (String aktivitet : steg.get(i).aktiviteter())
+            {
+               stegIndexPerAktivitet.put(ProcessbeskrivningReader.parseUuid(aktivitet), i);
+            }
          }
+      });
+
+      if (this.processvyUrl.isPresent())
+      {
+         LOGGER.info("Processvy-länk is configured: {}", this.processvyUrl.get());
       }
-      LOGGER.info("Loaded processbeskrivning for process {} with {} steg, processvyUrl: {}",
-            processbeskrivning.processId(), steg.size(), processvyUrl);
+      else
+      {
+         LOGGER.info("Processvy-länk is not configured ({} is not set): regel requests are sent without processvyUrl",
+               PROCESSVY_URL_PROPERTY);
+      }
+      if (processbeskrivning.isPresent())
+      {
+         LOGGER.info("Loaded processbeskrivning for process {} with {} steg", processbeskrivning.get().processId(),
+               processbeskrivning.get().steg().size());
+      }
+      else
+      {
+         LOGGER.info("No processbeskrivning ({} not found in resources): GET /processvy/steg answers 404",
+               ProcessbeskrivningReader.RESOURCE);
+      }
    }
 
-   public String getProcessvyUrl()
+   public Optional<String> getProcessvyUrl()
    {
       return processvyUrl;
    }
@@ -73,13 +91,14 @@ public class ProcessvyService
    public Optional<GetProcessvyStegResponse> getSteg(UUID aktivitetId)
    {
       Integer aktivtStegIndex = stegIndexPerAktivitet.get(aktivitetId);
-      if (aktivtStegIndex == null)
+      if (aktivtStegIndex == null || processbeskrivning.isEmpty())
       {
          return Optional.empty();
       }
 
+      Processbeskrivning beskrivning = processbeskrivning.get();
       List<ProcessSteg> processSteg = new ArrayList<>();
-      List<Processbeskrivning.Steg> steg = processbeskrivning.steg();
+      List<Processbeskrivning.Steg> steg = beskrivning.steg();
       for (int i = 0; i < steg.size(); i++)
       {
          processSteg.add(new ProcessSteg()
@@ -89,8 +108,8 @@ public class ProcessvyService
                .status(toStatus(i, aktivtStegIndex)));
       }
       return Optional.of(new GetProcessvyStegResponse()
-            .processId(processbeskrivning.processId())
-            .processnamn(processbeskrivning.processnamn())
+            .processId(beskrivning.processId())
+            .processnamn(beskrivning.processnamn())
             .steg(processSteg));
    }
 
