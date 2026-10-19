@@ -67,9 +67,13 @@ public class ProcessvyController implements ProcessvyControllerApi
       return Response.status(status).entity(errorResponse).build();
    }
 
-   static class AktivitetSaknasException extends RuntimeException
+   /**
+    * Måste vara public: Quarkus genererar exception-mappern i processens classloader, som annars inte kommer åt
+    * klassen när ramverket används som beroende (svaret blir då 500 i stället för 404).
+    */
+   public static class AktivitetSaknasException extends RuntimeException
    {
-      AktivitetSaknasException()
+      public AktivitetSaknasException()
       {
          super(AKTIVITET_SAKNAS);
       }
