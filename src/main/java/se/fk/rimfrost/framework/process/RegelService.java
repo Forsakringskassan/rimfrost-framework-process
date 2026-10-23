@@ -27,19 +27,13 @@ public class RegelService
       return new RegelProcessResult(response.getUtfall(), response.getError());
    }
 
-   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId,
-         String responseTopicProperty)
+   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId)
    {
-      LOGGER.info("Starting create RegelRequest for handlaggningId: {}, aktivitetId: {}, responseTopicProperty: {}",
-            handlaggningId, aktivitetId, responseTopicProperty);
-      String responseTopicName = config.getValue(responseTopicProperty, String.class);
-
-      LOGGER.info("Created RegelRequest with handlaggningId: {} and aktivitetId: {}. replyTo: {}", handlaggningId,
-            aktivitetId, responseTopicName);
+      LOGGER.info("Starting create RegelRequest for handlaggningId: {}, aktivitetId: {}",
+            handlaggningId, aktivitetId);
       RegelRequestMessagePayloadData requestMessageData = new RegelRequestMessagePayloadData();
       requestMessageData.setHandlaggningId(handlaggningId);
       requestMessageData.setAktivitetId(aktivitetId);
-      requestMessageData.setReplyTo(responseTopicName);
       return requestMessageData;
    }
 

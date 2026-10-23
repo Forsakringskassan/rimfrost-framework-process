@@ -28,7 +28,7 @@ public class RegelServiceTest
       String handlaggningId = UUID.randomUUID().toString();
       String aktivitetId = UUID.randomUUID().toString();
 
-      var request = regelService.createRegelRequest(handlaggningId, aktivitetId, "RESPONSE_TOPIC_NAME");
+      var request = regelService.createRegelRequest(handlaggningId, aktivitetId);
 
       assertNotNull(request);
       assertEquals(handlaggningId, request.getHandlaggningId());
