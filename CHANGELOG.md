@@ -2,6 +2,20 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.5 (2026-10-28)
+
+### Bug Fixes
+
+-  Replace github workflows ([ead94](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/ead94bc875e207e) Lars Persson)  
+-  **deps**  update dependency se.fk.rimfrost.framework.regel:rimfrost-framework-regel-asyncapi to v1.1.4 ([bca0c](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/bca0cb8e552fb37) renovate[bot])  
+-  **deps**  update dependency se.fk.rimfrost:rimfrost-process-asyncapi to v1.2.3 ([8b66e](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/8b66ee2e86c492b) renovate[bot])  
+
+### Dependency updates
+
+- update forsakringskassan/.github digest to cbd74f1 ([626ba](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/626ba7c5489e656) renovate[bot])  
+- update forsakringskassan/.github digest to bfb01f7 ([c7336](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/c7336b62344b8ba) renovate[bot])  
+## rimfrost-1_2 (2026-09-22)
+
 ## 1.6.4 (2026-08-29)
 
 ### Dependency updates
