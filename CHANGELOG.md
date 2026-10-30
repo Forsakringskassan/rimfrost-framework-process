@@ -2,6 +2,13 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.7 (2026-10-30)
+
+### Bug Fixes
+
+-  update asyncapi version ([098e0](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/098e00e9de9fdc4) Nils Elveros)  
+-  remove replyTo ([e746d](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/e746d29be9aec48) Nils Elveros)  
+
 ## 1.6.6 (2026-10-29)
 
 ### Bug Fixes
