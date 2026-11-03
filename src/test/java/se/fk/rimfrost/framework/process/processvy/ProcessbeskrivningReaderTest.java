@@ -16,6 +16,18 @@ public class ProcessbeskrivningReaderTest
 {
    private static final String STEG_A = "{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\"d4ab4820-68d9-41e0-abe1-cd8f9865d275\"]}";
 
+   private static final String STEG_B = "{\"id\":\"b\",\"rubrik\":\"B\",\"aktiviteter\":[\"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d\"]}";
+
+   private static String processbeskrivning(String steg)
+   {
+      return "{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[" + steg + "]}";
+   }
+
+   private static String forelder(String id, String understeg)
+   {
+      return "{\"id\":\"" + id + "\",\"rubrik\":\"" + id + "\",\"steg\":[" + understeg + "]}";
+   }
+
    @Test
    public void should_read_processbeskrivning_from_resources()
    {
@@ -27,6 +39,46 @@ public class ProcessbeskrivningReaderTest
             .containsExactly("kontrollera-ratt-till-forsakring", "berakna-ersattning", "bekrafta-beslut");
       assertThat(processbeskrivning.steg().get(0).aktiviteter()).hasSize(2);
       assertThat(processbeskrivning.steg().get(1).beskrivning()).isNull();
+   }
+
+   @Test
+   public void should_read_processbeskrivning_with_understeg()
+   {
+      var processbeskrivning = ProcessbeskrivningReader
+            .readResource("processvy/processbeskrivning-med-understeg.json").orElseThrow();
+
+      var forsta = processbeskrivning.steg().get(0);
+      assertThat(forsta.harUndersteg()).isTrue();
+      assertThat(forsta.aktiviteter()).isNull();
+      assertThat(forsta.steg()).extracting(Processbeskrivning.Steg::id)
+            .containsExactly("kontrollera-forsakring", "kontrollera-villkor");
+      assertThat(forsta.steg().get(1).steg()).extracting(Processbeskrivning.Steg::id)
+            .containsExactly("kontrollera-arbetsgivare", "kontrollera-anstallning");
+      assertThat(processbeskrivning.steg().get(1).harUndersteg()).isFalse();
+      assertThat(processbeskrivning.steg().get(1).steg()).isNull();
+      assertThat(processbeskrivning.innerstaSteg()).extracting(Processbeskrivning.Steg::id)
+            .containsExactly("kontrollera-forsakring", "kontrollera-arbetsgivare", "kontrollera-anstallning",
+                  "berakna-ersattning", "bekrafta-beslut");
+   }
+
+   @Test
+   public void should_read_processbeskrivning_without_understeg_as_before()
+   {
+      var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE).orElseThrow();
+
+      assertThat(processbeskrivning.steg()).noneMatch(Processbeskrivning.Steg::harUndersteg);
+      assertThat(processbeskrivning.innerstaSteg()).containsExactlyElementsOf(processbeskrivning.steg());
+   }
+
+   @Test
+   public void should_accept_understeg_two_levels_below_top_steg()
+   {
+      var json = processbeskrivning(forelder("fas", forelder("delsteg", STEG_A)));
+      var inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));
+
+      var processbeskrivning = ProcessbeskrivningReader.read(inputStream, "processbeskrivning.json");
+
+      assertThat(processbeskrivning.innerstaSteg()).extracting(Processbeskrivning.Steg::id).containsExactly("a");
    }
 
    @Test
@@ -90,7 +142,37 @@ public class ProcessbeskrivningReaderTest
                   "aktivitets-ID 'null' is not a valid UUID"),
             Arguments.of(
                   "{\"processId\":\"vah\",\"processnamn\":\"VAH\",\"steg\":[{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\"1-2-3-4-5\"]}]}",
-                  "'1-2-3-4-5' is not a valid UUID"));
+                  "'1-2-3-4-5' is not a valid UUID"),
+            Arguments.of(
+                  processbeskrivning(
+                        "{\"id\":\"fas\",\"rubrik\":\"Fas\",\"aktiviteter\":[\"8d2f3c1e-1b7a-4c5e-9f0a-2b3c4d5e6f70\"],\"steg\":["
+                              + STEG_A + "]}"),
+                  "steg[0]: must have either 'aktiviteter' or 'steg', not both"),
+            Arguments.of(processbeskrivning(forelder("fas", "")),
+                  "steg[0]: 'steg' must contain at least one understeg"),
+            Arguments.of(processbeskrivning(STEG_B + "," + forelder("fas", forelder("delsteg", "null"))),
+                  "steg[1].steg[0].steg[0] is empty"),
+            Arguments.of(processbeskrivning(forelder("fas", forelder("delsteg", forelder("for-djupt", STEG_A)))),
+                  "steg[0].steg[0].steg[0]: 'steg' is not allowed, understeg can be at most 2 levels below the top steg"),
+            Arguments.of(processbeskrivning(forelder("fas", "{\"id\":\"b\",\"rubrik\":\"B\"}")),
+                  "steg[0].steg[0]: 'aktiviteter' must contain at least one aktivitets-ID"),
+            Arguments.of(
+                  processbeskrivning(
+                        forelder("fas", "{\"id\":\"b\",\"aktiviteter\":[\"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d\"]}")),
+                  "steg[0].steg[0]: 'rubrik' is missing"),
+            Arguments.of(
+                  processbeskrivning(forelder("fas", "{\"id\":\"b\",\"rubrik\":\"B\",\"aktiviteter\":[\"inte-ett-uuid\"]}")),
+                  "steg[0].steg[0]: aktivitets-ID 'inte-ett-uuid' is not a valid UUID"),
+            Arguments.of(processbeskrivning(STEG_A + "," + forelder("fas", forelder("a", STEG_B))),
+                  "steg[1].steg[0]: 'id' a is used by more than one steg"),
+            Arguments.of(
+                  processbeskrivning(STEG_A + ","
+                        + forelder("fas",
+                              "{\"id\":\"c\",\"rubrik\":\"C\",\"aktiviteter\":[\"D4AB4820-68D9-41E0-ABE1-CD8F9865D275\"]}")),
+                  "steg[1].steg[0]: aktivitets-ID D4AB4820-68D9-41E0-ABE1-CD8F9865D275 is already used in steg[0]"),
+            Arguments.of(processbeskrivning(forelder("fas",
+                  "{\"id\":\"b\",\"rubrik\":\"B\",\"aktiviteter\":[\"5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d\"],\"okant\":1}")),
+                  "okant"));
    }
 
    @ParameterizedTest

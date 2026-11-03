@@ -22,6 +22,11 @@ public final class ProcessbeskrivningReader
 {
    public static final String RESOURCE = "processbeskrivning.json";
 
+   /**
+    * Hur många nivåer av understeg som får finnas under det översta steget.
+    */
+   static final int MAX_UNDERSTEG_NIVA = 2;
+
    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
          .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
@@ -93,12 +98,22 @@ public final class ProcessbeskrivningReader
          return errors;
       }
 
-      Set<String> stegIds = new HashSet<>();
-      Map<UUID, String> stegRefPerAktivitet = new HashMap<>();
-      for (int i = 0; i < processbeskrivning.steg().size(); i++)
+      validateSteg(processbeskrivning.steg(), "", 0, new HashSet<>(), new HashMap<>(), errors);
+      return errors;
+   }
+
+   /**
+    * Validerar stegen på en nivå och deras understeg. Id och aktivitets-ID:n ska vara unika i hela trädet, så
+    * {@code stegIds} och {@code stegRefPerAktivitet} delas mellan nivåerna. Felen anger stegets plats i trädet, till
+    * exempel {@code steg[0].steg[1]}.
+    */
+   private static void validateSteg(List<Processbeskrivning.Steg> stegLista, String parentRef, int niva,
+         Set<String> stegIds, Map<UUID, String> stegRefPerAktivitet, List<String> errors)
+   {
+      for (int i = 0; i < stegLista.size(); i++)
       {
-         Processbeskrivning.Steg steg = processbeskrivning.steg().get(i);
-         String stegRef = "steg[" + i + "]";
+         Processbeskrivning.Steg steg = stegLista.get(i);
+         String stegRef = parentRef + "steg[" + i + "]";
          if (steg == null)
          {
             errors.add(stegRef + " is empty");
@@ -115,6 +130,11 @@ public final class ProcessbeskrivningReader
          if (isBlank(steg.rubrik()))
          {
             errors.add(stegRef + ": 'rubrik' is missing");
+         }
+         if (steg.harUndersteg())
+         {
+            validateUndersteg(steg, stegRef, niva, stegIds, stegRefPerAktivitet, errors);
+            continue;
          }
          if (steg.aktiviteter() == null || steg.aktiviteter().isEmpty())
          {
@@ -135,7 +155,27 @@ public final class ProcessbeskrivningReader
             }
          }
       }
-      return errors;
+   }
+
+   private static void validateUndersteg(Processbeskrivning.Steg steg, String stegRef, int niva,
+         Set<String> stegIds, Map<UUID, String> stegRefPerAktivitet, List<String> errors)
+   {
+      if (steg.aktiviteter() != null)
+      {
+         errors.add(stegRef + ": must have either 'aktiviteter' or 'steg', not both");
+      }
+      if (steg.steg().isEmpty())
+      {
+         errors.add(stegRef + ": 'steg' must contain at least one understeg");
+         return;
+      }
+      if (niva >= MAX_UNDERSTEG_NIVA)
+      {
+         errors.add(stegRef + ": 'steg' is not allowed, understeg can be at most " + MAX_UNDERSTEG_NIVA
+               + " levels below the top steg");
+         return;
+      }
+      validateSteg(steg.steg(), stegRef + ".", niva + 1, stegIds, stegRefPerAktivitet, errors);
    }
 
    public static UUID parseUuid(String value)

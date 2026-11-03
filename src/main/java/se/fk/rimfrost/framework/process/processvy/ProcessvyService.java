@@ -40,6 +40,8 @@ public class ProcessvyService
 
    private Map<UUID, Integer> stegIndexPerAktivitet;
 
+   private Map<String, Integer> indexPerInnerstaSteg;
+
    @PostConstruct
    void init()
    {
@@ -51,11 +53,13 @@ public class ProcessvyService
       this.processvyUrl = processvyUrlConfig.filter(url -> !url.isBlank());
       this.processbeskrivning = processbeskrivning;
       this.stegIndexPerAktivitet = new HashMap<>();
+      this.indexPerInnerstaSteg = new HashMap<>();
       processbeskrivning.ifPresent(beskrivning -> {
-         List<Processbeskrivning.Steg> steg = beskrivning.steg();
-         for (int i = 0; i < steg.size(); i++)
+         List<Processbeskrivning.Steg> innersta = beskrivning.innerstaSteg();
+         for (int i = 0; i < innersta.size(); i++)
          {
-            for (String aktivitet : steg.get(i).aktiviteter())
+            indexPerInnerstaSteg.put(innersta.get(i).id(), i);
+            for (String aktivitet : innersta.get(i).aktiviteter())
             {
                stegIndexPerAktivitet.put(ProcessbeskrivningReader.parseUuid(aktivitet), i);
             }
@@ -73,8 +77,9 @@ public class ProcessvyService
       }
       if (processbeskrivning.isPresent())
       {
-         LOGGER.info("Loaded processbeskrivning for process {} with {} steg", processbeskrivning.get().processId(),
-               processbeskrivning.get().steg().size());
+         LOGGER.info("Loaded processbeskrivning for process {} with {} steg ({} innersta steg)",
+               processbeskrivning.get().processId(), processbeskrivning.get().steg().size(),
+               indexPerInnerstaSteg.size());
       }
       else
       {
@@ -97,20 +102,48 @@ public class ProcessvyService
       }
 
       Processbeskrivning beskrivning = processbeskrivning.get();
-      List<ProcessSteg> processSteg = new ArrayList<>();
-      List<Processbeskrivning.Steg> steg = beskrivning.steg();
-      for (int i = 0; i < steg.size(); i++)
-      {
-         processSteg.add(new ProcessSteg()
-               .id(steg.get(i).id())
-               .rubrik(steg.get(i).rubrik())
-               .beskrivning(steg.get(i).beskrivning())
-               .status(toStatus(i, aktivtStegIndex)));
-      }
       return Optional.of(new GetProcessvyStegResponse()
             .processId(beskrivning.processId())
             .processnamn(beskrivning.processnamn())
-            .steg(processSteg));
+            .steg(toProcessSteg(beskrivning.steg(), aktivtStegIndex)));
+   }
+
+   /**
+    * De innersta stegen får status efter sin plats i förhållande till det innersta steget med aktiviteten. Ett steg
+    * med understeg är PAGAR om något understeg pågår, KLAR om alla är klara och annars KOMMANDE. Fältet {@code steg}
+    * sätts bara för steg som har understeg.
+    */
+   private List<ProcessSteg> toProcessSteg(List<Processbeskrivning.Steg> steg, int aktivtStegIndex)
+   {
+      List<ProcessSteg> processSteg = new ArrayList<>();
+      for (Processbeskrivning.Steg s : steg)
+      {
+         ProcessSteg ps = new ProcessSteg()
+               .id(s.id())
+               .rubrik(s.rubrik())
+               .beskrivning(s.beskrivning());
+         if (s.harUndersteg())
+         {
+            List<ProcessSteg> understeg = toProcessSteg(s.steg(), aktivtStegIndex);
+            ps.steg(understeg).status(toStatus(understeg));
+         }
+         else
+         {
+            ps.status(toStatus(indexPerInnerstaSteg.get(s.id()), aktivtStegIndex));
+         }
+         processSteg.add(ps);
+      }
+      return processSteg;
+   }
+
+   private static StegStatus toStatus(List<ProcessSteg> understeg)
+   {
+      if (understeg.stream().anyMatch(s -> s.getStatus() == StegStatus.PAGAR))
+      {
+         return StegStatus.PAGAR;
+      }
+      return understeg.stream().allMatch(s -> s.getStatus() == StegStatus.KLAR) ? StegStatus.KLAR
+            : StegStatus.KOMMANDE;
    }
 
    private static StegStatus toStatus(int stegIndex, int aktivtStegIndex)

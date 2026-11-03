@@ -23,8 +23,8 @@ import se.fk.rimfrost.framework.process.processvy.Processbeskrivning;
 import se.fk.rimfrost.framework.process.processvy.ProcessbeskrivningReader;
 
 /**
- * Testhjälpmedel för processer: kontrollerar att varje aktivitets-ID i en BPMN-fil finns i processbeskrivningen, så
- * att bygget går sönder om BPMN och processbeskrivning glider isär.
+ * Testhjälpmedel för processer: kontrollerar att varje aktivitets-ID i en BPMN-fil finns i processbeskrivningen, i de
+ * innersta stegen på alla nivåer, så att bygget går sönder om BPMN och processbeskrivning glider isär.
  *
  * <pre>
  * &#64;Test
@@ -58,7 +58,7 @@ public final class ProcessbeskrivningVerifier
             .orElseThrow(() -> new AssertionError("Processbeskrivning is missing: could not find "
                   + processbeskrivningResource + " in the process resources (src/main/resources)"));
       Set<String> beskrivnaAktiviteter = new HashSet<>();
-      processbeskrivning.steg()
+      processbeskrivning.innerstaSteg()
             .forEach(steg -> steg.aktiviteter().forEach(aktivitet -> beskrivnaAktiviteter.add(normalize(aktivitet))));
 
       String bpmnProcessId = readProcessId(bpmnResource);

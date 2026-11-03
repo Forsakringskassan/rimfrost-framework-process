@@ -25,6 +25,25 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   public void should_find_aktiviteter_in_understeg_on_all_levels()
+   {
+      assertThatCode(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/test.bpmn",
+            "processvy/processbeskrivning-med-understeg.json"))
+            .doesNotThrowAnyException();
+   }
+
+   @Test
+   public void should_fail_when_aktivitet_is_missing_in_processbeskrivning_with_understeg()
+   {
+      assertThatThrownBy(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning(
+            "processvy/okand-aktivitet.bpmn", "processvy/processbeskrivning-med-understeg.json"))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("missing in processvy/processbeskrivning-med-understeg.json")
+            .hasMessageContaining("0f0f0f0f-0000-4000-8000-000000000001")
+            .hasMessageNotContaining("8d2f3c1e-1b7a-4c5e-9f0a-2b3c4d5e6f70");
+   }
+
+   @Test
    public void should_fail_when_aktivitet_is_missing_in_processbeskrivning()
    {
       assertThatThrownBy(
