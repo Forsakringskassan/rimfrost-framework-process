@@ -3,6 +3,9 @@ package se.fk.rimfrost.framework.process.processvy;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +26,9 @@ public class ProcessvyControllerTest
             .body("processId", equalTo("test"))
             .body("processnamn", equalTo("Testprocess"))
             .body("steg.id", contains("kontrollera-ratt-till-forsakring", "berakna-ersattning", "bekrafta-beslut"))
-            .body("steg.status", contains("KLAR", "PAGAR", "KOMMANDE"));
+            .body("steg.status", contains("KLAR", "PAGAR", "KOMMANDE"))
+            .body("steg", everyItem(not(hasKey("steg"))))
+            .body("steg[1]", hasKey("beskrivning"));
    }
 
    @Test
