@@ -22,7 +22,7 @@
 
 - **FPROC-FR-04.1** Ett steg i processbeskrivningen ska kunna ha `steg` i stället för `aktiviteter`. Ett understeg har samma fält som ett steg och kan ha egna understeg, högst två nivåer under det översta steget.
 - **FPROC-FR-04.2** Ett steg ska ha antingen `aktiviteter` eller `steg`, inte båda. Ett steg med `steg` ska ha minst ett understeg.
-- **FPROC-FR-04.3** Valideringen enligt FPROC-FR-02.2 ska gälla hela trädet: id ska vara unika i hela beskrivningen, varje innersta steg ska ha minst en aktivitet, och en aktivitet får bara förekomma i ett steg. Finns en tredje nivå under det översta steget är beskrivningen ogiltig.
+- **FPROC-FR-04.3** Valideringen av processbeskrivningen (se FPROC-FR-02.2) ska gälla hela trädet: id ska vara unika i hela beskrivningen, varje innersta steg ska ha minst en aktivitet, och en aktivitet får bara förekomma i ett steg. Finns en tredje nivå under det översta steget är beskrivningen ogiltig.
 - **FPROC-FR-04.4** En processbeskrivning utan understeg ska läsas och valideras som idag.
 
 ### FPROC-FR-05 — Status för understeg i steg-endpointen
