@@ -129,11 +129,11 @@ public class ProcessvyService
          }
          else
          {
-            Integer stegIndex = indexPerInnerstaSteg.get(s.id());                                                                                                                                                                                                                                                        
-            if (stegIndex == null)                               
-            {                                                                                                                                                                                                                                                                                                            
-              throw new IllegalStateException("Leaf steg id not in index: " + s.id());                                                                                                                                                                                                                                 
-            } 
+            Integer stegIndex = indexPerInnerstaSteg.get(s.id());
+            if (stegIndex == null)
+            {
+               throw new IllegalStateException("Leaf steg id not in index: " + s.id());
+            }
             ps.status(toStatus(stegIndex, aktivtStegIndex));
          }
          processSteg.add(ps);
