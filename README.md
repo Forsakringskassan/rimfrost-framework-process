@@ -49,13 +49,64 @@ Processbeskrivningen är den valfria filen `processbeskrivning.json` i processen
 | `steg[].id` | ja | Stegets ID, unikt i processbeskrivningen |
 | `steg[].rubrik` | ja | Stegets rubrik så som den visas för handläggaren |
 | `steg[].beskrivning` | nej | Valfri beskrivning av steget |
-| `steg[].aktiviteter` | ja | Minst ett aktivitets-ID (UUID). Samma värde som aktivitetens `aktivitetId` i BPMN-filen. Ett aktivitets-ID får bara höra till ett steg |
+| `steg[].aktiviteter` | ja, om steget inte har [understeg](#understeg) | Minst ett aktivitets-ID (UUID). Samma värde som aktivitetens `aktivitetId` i BPMN-filen. Ett aktivitets-ID får bara höra till ett steg |
 
 Okända fält ger fel, så att felstavningar upptäcks när processen startar.
 
+#### Understeg
+
+Ett steg kan bestå av understeg, till exempel en bedömning som består av flera kontroller. Ett sådant steg har `steg` i stället för `aktiviteter`, och ett understeg har samma fält som ett steg. Ett understeg kan i sin tur ha understeg, så att processvyn visar högst tre nivåer: steg, understeg och understegens understeg. Aktiviteterna ligger alltid i de innersta stegen:
+
+```json
+{
+  "processId": "vah",
+  "processnamn": "Vård av husdjur",
+  "steg": [
+    {
+      "id": "bedom-ratt-till-ersattning",
+      "rubrik": "Bedöm rätt till ersättning",
+      "steg": [
+        {
+          "id": "kontrollera-forsakring",
+          "rubrik": "Kontrollera försäkring",
+          "aktiviteter": ["d4ab4820-68d9-41e0-abe1-cd8f9865d275"]
+        },
+        {
+          "id": "kontrollera-villkor",
+          "rubrik": "Kontrollera villkor",
+          "steg": [
+            {
+              "id": "kontrollera-arbetsgivare",
+              "rubrik": "Kontrollera arbetsgivare",
+              "aktiviteter": ["1c9e7a54-3d2b-4f6a-8e1c-0a9b8c7d6e5f"]
+            },
+            {
+              "id": "kontrollera-anstallning",
+              "rubrik": "Kontrollera anställning",
+              "aktiviteter": ["2b3c4d5e-6f70-4a1b-9c2d-3e4f5a6b7c8e"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "berakna-ersattning",
+      "rubrik": "Beräkna ersättning",
+      "aktiviteter": ["5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d"]
+    }
+  ]
+}
+```
+
+| Fält | Obligatoriskt | Beskrivning |
+|---|---|---|
+| `steg[].steg` | i stället för `aktiviteter` | Minst ett understeg, i ordning, med samma fält som ett steg. Ett understeg kan ha egna understeg, men inte djupare än två nivåer under det översta steget |
+
+Reglerna gäller hela trädet: ett steg har antingen `aktiviteter` eller `steg`, aldrig båda, id är unika i hela processbeskrivningen och ett aktivitets-ID får bara höra till ett steg. Felmeddelandet anger var i trädet felet finns, till exempel `steg[0].steg[1]: 'aktiviteter' must contain at least one aktivitets-ID`. En processbeskrivning utan understeg fungerar som tidigare.
+
 ### Steg-endpoint
 
-`GET /processvy/steg?aktivitetId={uuid}` implementerar kontraktet i [rimfrost-framework-process-openapi](https://github.com/Forsakringskassan/rimfrost-framework-process-openapi). Steget som innehåller aktiviteten är `PAGAR`, tidigare steg `KLAR` och senare steg `KOMMANDE`. Ett aktivitets-ID som inte finns i processbeskrivningen ger `404`, liksom alla anrop om processen saknar processbeskrivning, och ett saknat eller ogiltigt aktivitets-ID ger `400`.
+`GET /processvy/steg?aktivitetId={uuid}` implementerar kontraktet i [rimfrost-framework-process-openapi](https://github.com/Forsakringskassan/rimfrost-framework-process-openapi). Steget som innehåller aktiviteten är `PAGAR`, tidigare steg `KLAR` och senare steg `KOMMANDE`. Med understeg räknas det på de innersta stegen, i ordning genom hela trädet, och ett steg med understeg är `PAGAR` om något understeg pågår, `KLAR` om alla är klara och annars `KOMMANDE`. Understegen finns i svarets fält `steg`, som saknas för steg utan understeg. Ett aktivitets-ID som inte finns i processbeskrivningen ger `404`, liksom alla anrop om processen saknar processbeskrivning, och ett saknat eller ogiltigt aktivitets-ID ger `400`.
 
 Endpointen ligger under `/processvy` och krockar därför inte med Kogitos genererade endpoints under `/{processId}`. Ingen process får därför heta `processvy`. Endpointen kommer med automatiskt i processer som indexerar ramverket (`quarkus.index-dependency.rimfrost-framework-process`).
 
@@ -83,4 +134,4 @@ void processbeskrivning_should_contain_all_aktiviteter()
 }
 ```
 
-Testet går sönder om en aktivitet i BPMN-filen saknas i processbeskrivningen, om `processId` inte är samma som processens id i BPMN-filen, om BPMN-filen saknar aktiviteter eller om en aktivitets `aktivitetId` inte tilldelas ett fast värde.
+Aktiviteterna letas upp i de innersta stegen på alla nivåer. Testet går sönder om en aktivitet i BPMN-filen saknas i processbeskrivningen, om `processId` inte är samma som processens id i BPMN-filen, om BPMN-filen saknar aktiviteter eller om en aktivitets `aktivitetId` inte tilldelas ett fast värde.
