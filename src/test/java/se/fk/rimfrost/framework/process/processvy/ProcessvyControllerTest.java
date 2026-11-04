@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.not;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -15,6 +16,7 @@ import io.quarkus.test.junit.QuarkusTest;
 public class ProcessvyControllerTest
 {
    @Test
+   @DisplayName("FPROC-FR-03.1, FPROC-FR-05.4: Steg-endpointen svarar med stegen och deras status")
    public void should_return_steg_for_known_aktivitet()
    {
       given()
@@ -32,6 +34,7 @@ public class ProcessvyControllerTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-03.2: Ett okänt aktivitets-ID ger 404")
    public void should_return_404_for_unknown_aktivitet()
    {
       given()
@@ -45,6 +48,7 @@ public class ProcessvyControllerTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-03.3: Endpointen hanterar bara /processvy/steg")
    public void should_not_handle_other_paths()
    {
       given()
@@ -55,6 +59,7 @@ public class ProcessvyControllerTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-03.1: Ett saknat aktivitets-ID ger 400")
    public void should_return_400_when_aktivitet_is_missing()
    {
       given()
@@ -67,6 +72,7 @@ public class ProcessvyControllerTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-03.1: Ett aktivitets-ID som inte är ett UUID ger 400")
    public void should_return_400_when_aktivitet_is_not_a_uuid()
    {
       given()
