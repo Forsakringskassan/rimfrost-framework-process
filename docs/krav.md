@@ -32,6 +32,13 @@
 - **FPROC-FR-05.3** Ett steg med understeg ska vara PAGAR om något understeg pågår, KLAR om alla understeg är klara och annars KOMMANDE.
 - **FPROC-FR-05.4** Fältet `steg` ska saknas i svaret för steg som inte har understeg. Svaret för en platt processbeskrivning ska vara detsamma som idag.
 
+### FPROC-FR-06 — Schema och validering av processbeskrivningen
+
+- **FPROC-FR-06.1** Ramverket ska ha ett JSON Schema för processbeskrivningen. Schemat ska beskriva alla fält och vilka som är obligatoriska, att aktivitets-ID:n är UUID, att ett steg har antingen `steg` eller `aktiviteter`, att inga andra fält är tillåtna och att det finns högst tre nivåer.
+- **FPROC-FR-06.2** Ramverket ska ha ett återanvändbart workflow som validerar en process `processbeskrivning.json` mot schemat, på samma sätt som `validate-config.yaml` i `rimfrost-framework-regel`. Saknas filen ska valideringen gå igenom, eftersom processbeskrivningen är valfri (FPROC-FR-02.2).
+- **FPROC-FR-06.3** Regler som schemat inte kan uttrycka, nämligen unika id i hela trädet och att en aktivitet bara finns i ett steg, ska fortsätta kontrolleras av ramverket när processen startar. En processbeskrivning som går igenom ramverkets kontroll ska också gå igenom schemat.
+- **FPROC-FR-06.4** Processbeskrivningen ska ha samma format och valideras på samma sätt oavsett om den skrivs för hand eller genereras från dokumentations-BPMN:en. Schemat är gränssnittet mot en framtida generator.
+
 ## 2. Icke-funktionella krav
 
 ### FPROC-NFR-01 — Testbarhet
@@ -42,3 +49,4 @@
 ### FPROC-NFR-02 — Tester
 
 - **FPROC-NFR-02.1** Enhetstester ska täcka läsning och validering av understeg (FPROC-FR-04.1–04.4) och statusberäkningen på varje nivå (FPROC-FR-05.2–05.4), också när den pågående aktiviteten ligger först eller sist i ett understeg.
+- **FPROC-NFR-02.2** Ett test ska validera README:ns exempel och testernas processbeskrivningar mot schemat, så att schemat och ramverkets kontroll inte glider isär (FPROC-FR-06.3).
