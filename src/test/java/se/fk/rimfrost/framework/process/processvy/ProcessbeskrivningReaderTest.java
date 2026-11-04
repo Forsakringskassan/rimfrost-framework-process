@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,6 +30,7 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-02.1: Processbeskrivningen läses från processens resurser")
    public void should_read_processbeskrivning_from_resources()
    {
       var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE).orElseThrow();
@@ -42,6 +44,7 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-04.1, FPROC-NFR-02.1: En processbeskrivning med understeg läses med alla nivåer")
    public void should_read_processbeskrivning_with_understeg()
    {
       var processbeskrivning = ProcessbeskrivningReader
@@ -62,6 +65,7 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-04.4: En processbeskrivning utan understeg läses som tidigare")
    public void should_read_processbeskrivning_without_understeg_as_before()
    {
       var processbeskrivning = ProcessbeskrivningReader.readResource(ProcessbeskrivningReader.RESOURCE).orElseThrow();
@@ -71,6 +75,7 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-04.1: Understeg två nivåer under det översta steget är tillåtna")
    public void should_accept_understeg_two_levels_below_top_steg()
    {
       var json = processbeskrivning(forelder("fas", forelder("delsteg", STEG_A)));
@@ -82,12 +87,14 @@ public class ProcessbeskrivningReaderTest
    }
 
    @Test
+   @DisplayName("FPROC-FR-02.2: En saknad processbeskrivning är tillåten")
    public void should_return_empty_when_processbeskrivning_is_missing()
    {
       assertThat(ProcessbeskrivningReader.readResource("saknas.json")).isEmpty();
    }
 
    @Test
+   @DisplayName("FPROC-FR-02.2: En ogiltig processbeskrivning i resurserna ger fel")
    public void should_fail_when_processbeskrivning_resource_is_invalid()
    {
       assertThatThrownBy(() -> ProcessbeskrivningReader.readResource("processvy/ogiltig-processbeskrivning.json"))
@@ -177,6 +184,7 @@ public class ProcessbeskrivningReaderTest
 
    @ParameterizedTest
    @MethodSource("invalidProcessbeskrivningar")
+   @DisplayName("FPROC-FR-02.2, FPROC-FR-04.2, FPROC-FR-04.3, FPROC-NFR-02.1: En ogiltig processbeskrivning ger fel som anger platsen i trädet")
    public void should_fail_when_processbeskrivning_is_invalid(String json, String expectedMessage)
    {
       var inputStream = new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8));

@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import jakarta.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import se.fk.rimfrost.framework.process.jaxrsspec.controllers.generatedsource.mo
 public class ProcessvyControllerUtanProcessbeskrivningTest
 {
    @Test
+   @DisplayName("FPROC-FR-02.2, FPROC-FR-03.2: Utan processbeskrivning svarar steg-endpointen 404")
    public void should_return_404_when_process_has_no_processbeskrivning()
    {
       var processvyService = new ProcessvyService();
