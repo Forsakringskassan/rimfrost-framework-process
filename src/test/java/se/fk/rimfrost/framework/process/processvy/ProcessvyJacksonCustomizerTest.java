@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,6 +21,7 @@ public class ProcessvyJacksonCustomizerTest
    ObjectMapper objectMapper;
 
    @Test
+   @DisplayName("FPROC-FR-05.1, FPROC-FR-05.4: Fältet steg finns i JSON-svaret bara för steg med understeg, på alla nivåer")
    public void should_omit_steg_only_for_steg_without_understeg_on_every_level()
    {
       var service = new ProcessvyService();

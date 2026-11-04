@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.junit.QuarkusTest;
@@ -22,12 +23,13 @@ public class RegelServiceUtanProcessvyTest
    RegelService regelService;
 
    @Test
+   @DisplayName("FPROC-FR-01.2: Utan processvy-länk skickas regelanropet utan processvyUrl")
    public void should_create_regel_request_without_processvy_url_when_not_configured()
    {
       String handlaggningId = UUID.randomUUID().toString();
       String aktivitetId = UUID.randomUUID().toString();
 
-      var request = regelService.createRegelRequest(handlaggningId, aktivitetId, "RESPONSE_TOPIC_NAME");
+      var request = regelService.createRegelRequest(handlaggningId, aktivitetId);
 
       assertEquals(handlaggningId, request.getHandlaggningId());
       assertEquals(aktivitetId, request.getAktivitetId());
