@@ -1,0 +1,34 @@
+name: Validate processbeskrivning.json
+
+on:
+  workflow_call:
+    inputs:
+      framework-ref:
+        description: 'Ref to use when checking out rimfrost-framework-process for the schema'
+        required: true
+        type: string
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout caller repo
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Checkout rimfrost-framework-process
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Forsakringskassan/rimfrost-framework-process
+          ref: ${{ inputs.framework-ref }}
+          path: framework-process
+
+      - name: Validate processbeskrivning.json against processbeskrivning schema
+        run: |
+          if [ ! -f src/main/resources/processbeskrivning.json ]; then
+            echo "src/main/resources/processbeskrivning.json is missing, nothing to validate (the processbeskrivning is optional)"
+            exit 0
+          fi
+          pip install check-jsonschema==0.37.3
+          check-jsonschema \
+            --schemafile framework-process/src/main/resources/schema/processbeskrivning.schema.json \
+            src/main/resources/processbeskrivning.json
