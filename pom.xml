@@ -53,6 +53,12 @@
       <artifactId>kogito-api</artifactId>
       <version>${version.org.kie.kogito}</version>
     </dependency>
+    <dependency>
+      <groupId>com.networknt</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>1.5.9</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <repositories>
