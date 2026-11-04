@@ -27,9 +27,9 @@
       "pattern": "\\S"
     },
     "aktivitetId": {
-      "description": "Aktivitetens aktivitetId i BPMN-filen.",
+      "description": "Aktivitetens aktivitetId i BPMN-filen. Blanksteg före och efter ignoreras, precis som i ramverket.",
       "type": "string",
-      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+      "pattern": "^\\s*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\s*$"
     },
     "id": {
       "description": "Stegets ID, unikt i hela processbeskrivningen.",
@@ -40,8 +40,12 @@
       "$ref": "#/$defs/text"
     },
     "beskrivning": {
-      "description": "Valfri beskrivning av steget.",
-      "type": "string"
+      "description": "Valfri beskrivning av steget. null betyder att beskrivning saknas.",
+      "type": ["string", "null"]
+    },
+    "saknas": {
+      "description": "Fältet hör till den andra varianten av steg. Det får bara finnas med värdet null, som ramverket läser som att fältet saknas.",
+      "type": "null"
     },
     "innerstaSteg": {
       "description": "Ett steg med aktiviteter.",
@@ -52,6 +56,7 @@
         "id": { "$ref": "#/$defs/id" },
         "rubrik": { "$ref": "#/$defs/rubrik" },
         "beskrivning": { "$ref": "#/$defs/beskrivning" },
+        "steg": { "$ref": "#/$defs/saknas" },
         "aktiviteter": {
           "description": "Minst ett aktivitets-ID. Ett aktivitets-ID får bara höra till ett steg.",
           "type": "array",
@@ -72,6 +77,7 @@
             "id": { "$ref": "#/$defs/id" },
             "rubrik": { "$ref": "#/$defs/rubrik" },
             "beskrivning": { "$ref": "#/$defs/beskrivning" },
+            "aktiviteter": { "$ref": "#/$defs/saknas" },
             "steg": {
               "description": "Stegets understeg, i ordning.",
               "type": "array",
@@ -94,6 +100,7 @@
             "id": { "$ref": "#/$defs/id" },
             "rubrik": { "$ref": "#/$defs/rubrik" },
             "beskrivning": { "$ref": "#/$defs/beskrivning" },
+            "aktiviteter": { "$ref": "#/$defs/saknas" },
             "steg": {
               "description": "Understegets understeg, i ordning. De har bara aktiviteter, eftersom det inte finns fler nivåer.",
               "type": "array",
