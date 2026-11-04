@@ -104,6 +104,36 @@ Ett steg kan bestå av understeg, till exempel en bedömning som består av fler
 
 Reglerna gäller hela trädet: ett steg har antingen `aktiviteter` eller `steg`, aldrig båda, id är unika i hela processbeskrivningen och ett aktivitets-ID får bara höra till ett steg. Felmeddelandet anger var i trädet felet finns, till exempel `steg[0].steg[1]: 'aktiviteter' must contain at least one aktivitets-ID`. En processbeskrivning utan understeg fungerar som tidigare.
 
+#### Schema och validering i CI
+
+Formatet beskrivs av JSON Schemat [`src/main/resources/schema/processbeskrivning.schema.json`](src/main/resources/schema/processbeskrivning.schema.json). Schemat beskriver alla fält och vilka som är obligatoriska, att aktivitets-ID:n är UUID, att ett steg har antingen `aktiviteter` eller `steg`, att inga andra fält är tillåtna och att det finns högst tre nivåer.
+
+En process validerar sin `processbeskrivning.json` mot schemat i CI genom att anropa ramverkets workflow från sin `maven-ci`, på samma sätt som regel-repona validerar `config.yaml` mot `rimfrost-framework-regel`:
+
+```yaml
+jobs:
+  validate-processbeskrivning:
+    uses: Forsakringskassan/rimfrost-framework-process/.github/workflows/validate-processbeskrivning.yaml@main
+    with:
+      framework-ref: main
+```
+
+`framework-ref` anger vilken version av ramverket schemat hämtas från, till exempel `main`, en tagg eller en branch. Workflowet validerar `src/main/resources/processbeskrivning.json`. Saknas filen går valideringen igenom, eftersom processbeskrivningen är valfri.
+
+Schemat och ramverket delar på kontrollen:
+
+| Kontroll | Schemat (CI) | Ramverket (när processen startar) |
+|---|---|---|
+| Obligatoriska fält, okända fält, UUID-format | ja | ja |
+| `aktiviteter` eller `steg`, högst tre nivåer | ja | ja |
+| Unika id i hela processbeskrivningen | nej | ja |
+| Ett aktivitets-ID hör bara till ett steg | nej | ja |
+| Varje aktivitet i BPMN-filen finns i processbeskrivningen | nej | nej, se [Testhjälpmedel](#testhjälpmedel) |
+
+Ett JSON Schema kan inte uttrycka unikhet över hela trädet, så de reglerna kontrolleras bara av ramverket. En processbeskrivning som går igenom ramverkets kontroll går också igenom schemat. Ramverkets test `ProcessbeskrivningSchemaTest` validerar README:ns exempel och testernas processbeskrivningar mot både schemat och ramverket, så att de inte glider isär.
+
+Formatet och valideringen är desamma oavsett om `processbeskrivning.json` skrivs för hand eller genereras, till exempel från processens dokumentations-BPMN. Schemat är det format en sådan generator ska producera.
+
 ### Steg-endpoint
 
 `GET /processvy/steg?aktivitetId={uuid}` implementerar kontraktet i [rimfrost-framework-process-openapi](https://github.com/Forsakringskassan/rimfrost-framework-process-openapi). Steget som innehåller aktiviteten är `PAGAR`, tidigare steg `KLAR` och senare steg `KOMMANDE`. Med understeg räknas det på de innersta stegen, i ordning genom hela trädet, och ett steg med understeg är `PAGAR` om något understeg pågår, `KLAR` om alla är klara och annars `KOMMANDE`. Understegen finns i svarets fält `steg`, som saknas för steg utan understeg. Ett aktivitets-ID som inte finns i processbeskrivningen ger `404`, liksom alla anrop om processen saknar processbeskrivning, och ett saknat eller ogiltigt aktivitets-ID ger `400`.
