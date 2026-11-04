@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -118,6 +119,7 @@ public class ProcessbeskrivningSchemaTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-02.2: README:n innehåller exempel på processbeskrivningar att validera")
    public void readme_should_contain_processbeskrivning_examples() throws IOException
    {
       assertThat(giltigaProcessbeskrivningar().filter(a -> a.get()[0].toString().startsWith("README.md")))
@@ -126,6 +128,7 @@ public class ProcessbeskrivningSchemaTest
 
    @ParameterizedTest(name = "{0}")
    @MethodSource("giltigaProcessbeskrivningar")
+   @DisplayName("FPROC-FR-06.3, FPROC-NFR-02.2: README:ns och testernas processbeskrivningar är giltiga enligt både schemat och ramverket")
    public void processbeskrivning_should_be_valid_according_to_schema_and_framework(String source, String json)
    {
       assertThat(validate(json)).as(source).isEmpty();
@@ -164,12 +167,14 @@ public class ProcessbeskrivningSchemaTest
 
    @ParameterizedTest(name = "{0}")
    @MethodSource("ogiltigaProcessbeskrivningar")
+   @DisplayName("FPROC-FR-06.1: Schemat underkänner saknade fält, okända fält, ogiltiga UUID, både aktiviteter och steg och för många nivåer")
    public void processbeskrivning_should_be_invalid_according_to_schema(String fall, String json)
    {
       assertThat(validate(json)).as(fall).isNotEmpty();
    }
 
    @Test
+   @DisplayName("FPROC-FR-06.1: Schemat godkänner tre nivåer")
    public void schema_should_accept_three_levels()
    {
       String json = processbeskrivning(forelder("fas", forelder("delsteg", innersta("a"))));
