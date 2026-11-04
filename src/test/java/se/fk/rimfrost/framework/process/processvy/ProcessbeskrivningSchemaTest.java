@@ -39,7 +39,7 @@ public class ProcessbeskrivningSchemaTest
          "processbeskrivning.json",
          "processvy/processbeskrivning-med-understeg.json");
 
-   private static final Pattern JSON_BLOCK = Pattern.compile("```json\\n(.*?)```", Pattern.DOTALL);
+   private static final Pattern JSON_BLOCK = Pattern.compile("```json\\r?\\n(.*?)```", Pattern.DOTALL);
 
    private static final String AKTIVITET_A = "\"d4ab4820-68d9-41e0-abe1-cd8f9865d275\"";
 
@@ -103,6 +103,17 @@ public class ProcessbeskrivningSchemaTest
       {
          arguments.add(Arguments.of("README.md exempel " + ++exempel, matcher.group(1)));
       }
+      arguments.add(Arguments.of("platt", processbeskrivning(innersta("a"))));
+      arguments.add(Arguments.of("understeg i två nivåer", processbeskrivning(forelder("fas", forelder("delsteg",
+            innersta("a"))))));
+      arguments.add(Arguments.of("aktivitets-ID med versaler", processbeskrivning(
+            "{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\"D4AB4820-68D9-41E0-ABE1-CD8F9865D275\"]}")));
+      arguments.add(Arguments.of("aktivitets-ID med blanksteg runt", processbeskrivning(
+            "{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\" d4ab4820-68d9-41e0-abe1-cd8f9865d275 \"]}")));
+      arguments.add(Arguments.of("fält med null", processbeskrivning(
+            "{\"id\":\"fas\",\"rubrik\":\"Fas\",\"beskrivning\":null,\"aktiviteter\":null,\"steg\":["
+                  + "{\"id\":\"a\",\"rubrik\":\"A\",\"beskrivning\":null,\"steg\":null,\"aktiviteter\":["
+                  + AKTIVITET_A + "]}]}")));
       return arguments.stream();
    }
 
@@ -133,6 +144,8 @@ public class ProcessbeskrivningSchemaTest
             Arguments.of("id saknas", processbeskrivning("{\"rubrik\":\"A\",\"aktiviteter\":[" + AKTIVITET_A + "]}")),
             Arguments.of("rubrik saknas", processbeskrivning("{\"id\":\"a\",\"aktiviteter\":[" + AKTIVITET_A + "]}")),
             Arguments.of("varken aktiviteter eller steg", processbeskrivning("{\"id\":\"a\",\"rubrik\":\"A\"}")),
+            Arguments.of("aktiviteter är null utan steg",
+                  processbeskrivning("{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":null}")),
             Arguments.of("tom aktiviteter", processbeskrivning("{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[]}")),
             Arguments.of("aktivitets-ID är inte ett UUID",
                   processbeskrivning("{\"id\":\"a\",\"rubrik\":\"A\",\"aktiviteter\":[\"inte-ett-uuid\"]}")),

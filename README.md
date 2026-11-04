@@ -118,7 +118,7 @@ jobs:
       framework-ref: main
 ```
 
-`framework-ref` anger vilken version av ramverket schemat hämtas från, till exempel `main`, en tagg eller en branch. Workflowet validerar `src/main/resources/processbeskrivning.json`. Saknas filen går valideringen igenom, eftersom processbeskrivningen är valfri.
+`framework-ref` anger vilken version av ramverket schemat hämtas från, till exempel `main`, en tagg eller en branch. Ange samma ref i `uses:` och `framework-ref`, så att workflowet och schemat kommer från samma version. Workflowet validerar `src/main/resources/processbeskrivning.json`. Saknas filen går valideringen igenom, eftersom processbeskrivningen är valfri.
 
 Schemat och ramverket delar på kontrollen:
 
