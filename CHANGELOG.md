@@ -2,6 +2,35 @@
 
 Changelog of rimfrost-framework-process.
 
+## 1.6.8 (2026-11-09)
+
+### Bug Fixes
+
+-  update to regel asyncapi without replyTo ([35bab](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/35bab997863ea85) Nils Elveros)  
+
+### Dependency updates
+
+- update forsakringskassan/.github digest to cbc0db8 ([df866](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/df866ae9745a9cd) renovate[bot])  
+### Other changes
+
+**use 10.2.0 kogito verrsion**
+
+
+[acbf8](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/acbf8046011f2af) Nils Elveros *2026-11-09 14:38:26*
+
+**Update pom.xml**
+
+* Co-authored-by: larpersso &lt;254442132+larpersso@users.noreply.github.com&gt; 
+
+[08590](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/08590a6a6827a66) NilsElveros *2026-11-09 14:36:38*
+
+**Update pom.xml**
+
+* Co-authored-by: larpersso &lt;254442132+larpersso@users.noreply.github.com&gt; 
+
+[cd716](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/cd716a2500a713f) NilsElveros *2026-11-09 14:36:27*
+
+
 ## 1.6.7 (2026-10-30)
 
 ### Bug Fixes
