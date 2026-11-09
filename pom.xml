@@ -19,7 +19,7 @@
   <properties>
     <violations.maxViolations>0</violations.maxViolations>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-    <version.org.kie.kogito>999-SNAPSHOT</version.org.kie.kogito>
+    <version.org.kie.kogito>10.2.0</version.org.kie.kogito>
     <quarkus.build.skip>true</quarkus.build.skip>
   </properties>
 
