@@ -41,7 +41,7 @@ public class RegelServiceUtanProcessvyTest
       @Override
       public Map<String, String> getConfigOverrides()
       {
-         return Map.of("PROCESSVY_URL", "");
+         return Map.of("processvy.url", "");
       }
    }
 }

@@ -27,7 +27,7 @@ import se.fk.rimfrost.framework.process.jaxrsspec.controllers.generatedsource.mo
 @ApplicationScoped
 public class ProcessvyService
 {
-   public static final String PROCESSVY_URL_PROPERTY = "PROCESSVY_URL";
+   public static final String PROCESSVY_URL_PROPERTY = "processvy.url";
 
    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessvyService.class);
 
