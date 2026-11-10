@@ -2,6 +2,35 @@
 
 Changelog of rimfrost-framework-process.
 
+## 2.0.0 (2026-11-10)
+
+### Breaking changes
+
+-  add processvy-url to regel request and processvy steg endpoint (FKPOC-1154) ([a1653](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/a165381397a0260) LisaWedin_Ductus)  
+
+### Features
+
+-  add processvy-url to regel request and processvy steg endpoint (FKPOC-1154) ([a1653](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/a165381397a0260) LisaWedin_Ductus)  
+
+### Bug Fixes
+
+-  rename PROCESSVY_URL property to processvy.url (FKPOC-1154) ([dc05e](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/dc05e9011b2fe03) LisaWedin_Ductus)  
+-  pin kogito to released 10.2.0 (FKPOC-1154) ([d7a8b](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d7a8b29cb541fb2) LisaWedin_Ductus)  
+-  make AktivitetSaknasException public so 404 works in processes (FKPOC-1154) ([1e7ea](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/1e7ea425701399d) LisaWedin_Ductus)  
+-  make processvy-länk and processbeskrivning optional (FKPOC-1154) ([07b52](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/07b524ec00a271b) LisaWedin_Ductus)  
+-  address review comments (FKPOC-1154) ([b6276](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/b627677ce64b031) LisaWedin_Ductus)  
+
+### Other changes
+
+**Merge remote-tracking branch 'origin/main' into feat/FKPOC-1154-processvy**
+
+* # Conflicts: 
+* #	src/main/java/se/fk/rimfrost/framework/process/RegelService.java 
+* #	src/test/resources/application.properties 
+
+[f9470](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/f947025c41828a5) LisaWedin_Ductus *2026-11-04 07:50:31*
+
+
 ## 1.6.8 (2026-11-09)
 
 ### Bug Fixes
