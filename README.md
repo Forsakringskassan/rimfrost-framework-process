@@ -17,7 +17,7 @@ Både länken och processbeskrivningen är valfria. Saknas länken skickas regel
 Länken till processens processvy anges (valfritt) i processens `application.properties`, i samma format som en uppgifts `url`:
 
 ```properties
-PROCESSVY_URL=/process/vah
+processvy.url=/process/vah
 ```
 
 `RegelService.createRegelRequest` sätter länken som `processvyUrl` i regelanropet. Saknas länken sätts inte `processvyUrl`.
