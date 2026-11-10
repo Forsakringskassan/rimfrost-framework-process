@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="_test" targetNamespace="http://www.omg.org/bpmn20">
+  <bpmn2:process id="test" name="test" isExecutable="true">
+    <bpmn2:callActivity id="_CALL_1" name="Regel 1" calledElement="regel_1">
+      <bpmn2:ioSpecification id="_IO_1">
+        <bpmn2:dataInput id="_IN_HANDLAGGNING_1" name="handlaggningId" />
+        <bpmn2:dataInput id="_IN_AKTIVITET_1" name="aktivitetId" />
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_ASSOC_HANDLAGGNING_1">
+        <bpmn2:sourceRef>handlaggningId</bpmn2:sourceRef>
+        <bpmn2:targetRef>_IN_HANDLAGGNING_1</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_ASSOC_AKTIVITET_1">
+        <bpmn2:targetRef>_IN_AKTIVITET_1</bpmn2:targetRef>
+        <bpmn2:assignment id="_ASSIGN_1">
+          <bpmn2:from id="_FROM_1" xsi:type="bpmn2:tFormalExpression">8d2f3c1e-1b7a-4c5e-9f0a-2b3c4d5e6f70</bpmn2:from>
+          <bpmn2:to id="_TO_1">_IN_AKTIVITET_1</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:callActivity>
+    <bpmn2:callActivity id="_CALL_2" name="Regel 2" calledElement="regel_2">
+      <bpmn2:ioSpecification id="_IO_2">
+        <bpmn2:dataInput id="_IN_HANDLAGGNING_2" name="handlaggningId" />
+        <bpmn2:dataInput id="_IN_AKTIVITET_2" name="aktivitetId" />
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_ASSOC_HANDLAGGNING_2">
+        <bpmn2:sourceRef>handlaggningId</bpmn2:sourceRef>
+        <bpmn2:targetRef>_IN_HANDLAGGNING_2</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_ASSOC_AKTIVITET_2">
+        <bpmn2:targetRef>_IN_AKTIVITET_2</bpmn2:targetRef>
+        <bpmn2:assignment id="_ASSIGN_2">
+          <bpmn2:from id="_FROM_2" xsi:type="bpmn2:tFormalExpression">5a6b7c8d-9e0f-4a1b-8c2d-3e4f5a6b7c8d</bpmn2:from>
+          <bpmn2:to id="_TO_2">_IN_AKTIVITET_2</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:callActivity>
+    <bpmn2:callActivity id="_CALL_3" name="Regel 3" calledElement="regel_3">
+      <bpmn2:ioSpecification id="_IO_3">
+        <bpmn2:dataInput id="_IN_HANDLAGGNING_3" name="handlaggningId" />
+        <bpmn2:dataInput id="_IN_AKTIVITET_3" name="aktivitetId" />
+      </bpmn2:ioSpecification>
+      <bpmn2:dataInputAssociation id="_ASSOC_HANDLAGGNING_3">
+        <bpmn2:sourceRef>handlaggningId</bpmn2:sourceRef>
+        <bpmn2:targetRef>_IN_HANDLAGGNING_3</bpmn2:targetRef>
+      </bpmn2:dataInputAssociation>
+      <bpmn2:dataInputAssociation id="_ASSOC_AKTIVITET_3">
+        <bpmn2:targetRef>_IN_AKTIVITET_3</bpmn2:targetRef>
+        <bpmn2:assignment id="_ASSIGN_3">
+          <bpmn2:from id="_FROM_3" xsi:type="bpmn2:tFormalExpression">D4AB4820-68D9-41E0-ABE1-CD8F9865D275</bpmn2:from>
+          <bpmn2:to id="_TO_3">_IN_AKTIVITET_3</bpmn2:to>
+        </bpmn2:assignment>
+      </bpmn2:dataInputAssociation>
+    </bpmn2:callActivity>
+  </bpmn2:process>
+</bpmn2:definitions>

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import se.fk.rimfrost.framework.process.processvy.ProcessvyService;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.RegelRequestMessagePayloadData;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
@@ -18,6 +19,9 @@ public class RegelService
 
    @Inject
    Config config;
+
+   @Inject
+   ProcessvyService processvyService;
 
    private static final Logger LOGGER = LoggerFactory.getLogger(RegelService.class);
 
@@ -34,6 +38,7 @@ public class RegelService
       RegelRequestMessagePayloadData requestMessageData = new RegelRequestMessagePayloadData();
       requestMessageData.setHandlaggningId(handlaggningId);
       requestMessageData.setAktivitetId(aktivitetId);
+      processvyService.getProcessvyUrl().ifPresent(requestMessageData::setProcessvyUrl);
       return requestMessageData;
    }
 
