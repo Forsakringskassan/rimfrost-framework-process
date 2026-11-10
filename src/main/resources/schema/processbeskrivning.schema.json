@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Processbeskrivning",
+  "description": "Processens steg i den ordning de visas i processvyn, och vilka aktiviteter som hör till varje steg. Ett steg har antingen aktiviteter eller understeg, i högst tre nivåer. Unika id och att en aktivitet bara hör till ett steg kontrolleras av rimfrost-framework-process när processen startar.",
+  "type": "object",
+  "required": ["processId", "processnamn", "steg"],
+  "additionalProperties": false,
+  "properties": {
+    "processId": {
+      "description": "Processens ID, samma som i BPMN-filen.",
+      "$ref": "#/$defs/text"
+    },
+    "processnamn": {
+      "description": "Processens namn så som det visas för handläggaren.",
+      "$ref": "#/$defs/text"
+    },
+    "steg": {
+      "description": "Processens steg, i ordning.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/stegNiva1" }
+    }
+  },
+  "$defs": {
+    "text": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "aktivitetId": {
+      "description": "Aktivitetens aktivitetId i BPMN-filen. Blanksteg före och efter ignoreras, precis som i ramverket.",
+      "type": "string",
+      "pattern": "^\\s*[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\s*$"
+    },
+    "id": {
+      "description": "Stegets ID, unikt i hela processbeskrivningen.",
+      "$ref": "#/$defs/text"
+    },
+    "rubrik": {
+      "description": "Stegets rubrik så som den visas för handläggaren.",
+      "$ref": "#/$defs/text"
+    },
+    "beskrivning": {
+      "description": "Valfri beskrivning av steget. null betyder att beskrivning saknas.",
+      "type": ["string", "null"]
+    },
+    "saknas": {
+      "description": "Fältet hör till den andra varianten av steg. Det får bara finnas med värdet null, som ramverket läser som att fältet saknas.",
+      "type": "null"
+    },
+    "innerstaSteg": {
+      "description": "Ett steg med aktiviteter.",
+      "type": "object",
+      "required": ["id", "rubrik", "aktiviteter"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "rubrik": { "$ref": "#/$defs/rubrik" },
+        "beskrivning": { "$ref": "#/$defs/beskrivning" },
+        "steg": { "$ref": "#/$defs/saknas" },
+        "aktiviteter": {
+          "description": "Minst ett aktivitets-ID. Ett aktivitets-ID får bara höra till ett steg.",
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/aktivitetId" }
+        }
+      }
+    },
+    "stegNiva1": {
+      "description": "Ett översta steg: antingen ett steg med aktiviteter eller ett steg med understeg.",
+      "oneOf": [
+        { "$ref": "#/$defs/innerstaSteg" },
+        {
+          "type": "object",
+          "required": ["id", "rubrik", "steg"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "$ref": "#/$defs/id" },
+            "rubrik": { "$ref": "#/$defs/rubrik" },
+            "beskrivning": { "$ref": "#/$defs/beskrivning" },
+            "aktiviteter": { "$ref": "#/$defs/saknas" },
+            "steg": {
+              "description": "Stegets understeg, i ordning.",
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/stegNiva2" }
+            }
+          }
+        }
+      ]
+    },
+    "stegNiva2": {
+      "description": "Ett understeg: antingen ett steg med aktiviteter eller ett steg med egna understeg.",
+      "oneOf": [
+        { "$ref": "#/$defs/innerstaSteg" },
+        {
+          "type": "object",
+          "required": ["id", "rubrik", "steg"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "$ref": "#/$defs/id" },
+            "rubrik": { "$ref": "#/$defs/rubrik" },
+            "beskrivning": { "$ref": "#/$defs/beskrivning" },
+            "aktiviteter": { "$ref": "#/$defs/saknas" },
+            "steg": {
+              "description": "Understegets understeg, i ordning. De har bara aktiviteter, eftersom det inte finns fler nivåer.",
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/$defs/innerstaSteg" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
