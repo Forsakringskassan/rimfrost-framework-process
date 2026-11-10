@@ -2,6 +2,7 @@ package se.fk.framework.process;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -23,6 +24,7 @@ public class RegelServiceTest
    RegelService regelService;
 
    @Test
+   @DisplayName("FPROC-FR-01.1: Regelanropet får processvyUrl från processens konfiguration")
    public void should_return_expected_regel_request()
    {
       String handlaggningId = UUID.randomUUID().toString();

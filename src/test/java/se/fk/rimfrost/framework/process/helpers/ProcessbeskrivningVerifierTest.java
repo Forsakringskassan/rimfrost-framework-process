@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ProcessbeskrivningVerifierTest
 {
    @Test
+   @DisplayName("FPROC-NFR-01.1: Alla aktivitets-ID:n i BPMN-filen läses")
    public void should_read_all_aktivitet_ids_in_bpmn()
    {
       assertThat(ProcessbeskrivningVerifier.readAktivitetIds("processvy/test.bpmn")).containsExactly(
@@ -18,6 +20,7 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: Verifieringen går igenom när alla aktiviteter finns i processbeskrivningen")
    public void should_pass_when_all_aktiviteter_are_in_processbeskrivning()
    {
       assertThatCode(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/test.bpmn"))
@@ -25,6 +28,28 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.2: Aktiviteterna hittas i de innersta stegen på alla nivåer")
+   public void should_find_aktiviteter_in_understeg_on_all_levels()
+   {
+      assertThatCode(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/test.bpmn",
+            "processvy/processbeskrivning-med-understeg.json"))
+            .doesNotThrowAnyException();
+   }
+
+   @Test
+   @DisplayName("FPROC-NFR-01.2: En aktivitet som saknas i en processbeskrivning med understeg ger fel")
+   public void should_fail_when_aktivitet_is_missing_in_processbeskrivning_with_understeg()
+   {
+      assertThatThrownBy(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning(
+            "processvy/okand-aktivitet.bpmn", "processvy/processbeskrivning-med-understeg.json"))
+            .isInstanceOf(AssertionError.class)
+            .hasMessageContaining("missing in processvy/processbeskrivning-med-understeg.json")
+            .hasMessageContaining("0f0f0f0f-0000-4000-8000-000000000001")
+            .hasMessageNotContaining("8d2f3c1e-1b7a-4c5e-9f0a-2b3c4d5e6f70");
+   }
+
+   @Test
+   @DisplayName("FPROC-NFR-01.1: En aktivitet som saknas i processbeskrivningen ger fel")
    public void should_fail_when_aktivitet_is_missing_in_processbeskrivning()
    {
       assertThatThrownBy(
@@ -36,6 +61,7 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: En BPMN-fil utan aktiviteter ger fel")
    public void should_fail_when_bpmn_has_no_aktiviteter()
    {
       assertThatThrownBy(
@@ -45,6 +71,7 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: Ett aktivitets-ID som inte är ett fast värde ger fel")
    public void should_fail_when_aktivitet_is_not_a_fixed_value()
    {
       assertThatThrownBy(() -> ProcessbeskrivningVerifier.readAktivitetIds("processvy/aktivitet-fran-variabel.bpmn"))
@@ -55,6 +82,7 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: Olika processId i BPMN-filen och processbeskrivningen ger fel")
    public void should_fail_when_process_id_differs_from_processbeskrivning()
    {
       assertThatThrownBy(
@@ -65,12 +93,14 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: Processens id läses från BPMN-filen")
    public void should_read_process_id_in_bpmn()
    {
       assertThat(ProcessbeskrivningVerifier.readProcessId("processvy/test.bpmn")).isEqualTo("test");
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: En saknad BPMN-fil ger fel")
    public void should_fail_when_bpmn_is_missing()
    {
       assertThatThrownBy(() -> ProcessbeskrivningVerifier.readAktivitetIds("processvy/saknas.bpmn"))
@@ -79,6 +109,7 @@ public class ProcessbeskrivningVerifierTest
    }
 
    @Test
+   @DisplayName("FPROC-NFR-01.1: En saknad processbeskrivning ger fel i verifieringen")
    public void should_fail_when_processbeskrivning_is_missing()
    {
       assertThatThrownBy(() -> ProcessbeskrivningVerifier.assertAllAktiviteterInProcessbeskrivning("processvy/test.bpmn",
