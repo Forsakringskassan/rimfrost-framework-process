@@ -2,6 +2,30 @@
 
 Changelog of rimfrost-framework-process.
 
+## 2.1.0 (2026-11-10)
+
+### Features
+
+-  add JSON Schema and validate workflow for processbeskrivning (FKPOC-1307) ([8e779](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/8e7791ff2b4b4d4) LisaWedin_Ductus)  
+-  support understeg in processbeskrivning and processvy steg (FKPOC-1306) ([7c4ab](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/7c4ab1cc1e1168e) LisaWedin_Ductus)  
+
+### Bug Fixes
+
+-  address review comments (FKPOC-1307) ([d347b](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/d347bbeea95f5f0) LisaWedin_Ductus)  
+-  **deps**  update rimfrost-framework-regel-error-codes to 1.1.3 (FKPOC-1306) ([b7e49](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/b7e495f1e449942) LisaWedin_Ductus)  
+-  **deps**  update rimfrost-framework-regel-asyncapi to 1.2.3 (FKPOC-1306) ([5b6d2](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/5b6d277529b604f) LisaWedin_Ductus)  
+-  throw when leaf steg is missing from index (FKPOC-1306) ([18839](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/18839afd87eb17b) LisaWedin-Ductus)  
+-  **deps**  use rimfrost-framework-process-openapi 1.1.0 (FKPOC-1306) ([86994](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/869948569d42e9a) LisaWedin_Ductus)  
+-  address review comments (FKPOC-1306) ([68803](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/68803ebc98801e8) LisaWedin_Ductus)  
+
+### Other changes
+
+**Merge branch 'feat/FKPOC-1154-processvy' into feat/FKPOC-1306-understeg**
+
+
+[9749c](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/9749cab7ceb2ba7) LisaWedin_Ductus *2026-11-10 06:57:52*
+
+
 ## 2.0.0 (2026-11-10)
 
 ### Breaking changes
