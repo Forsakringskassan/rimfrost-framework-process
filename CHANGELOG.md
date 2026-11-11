@@ -2,6 +2,12 @@
 
 Changelog of rimfrost-framework-process.
 
+## 2.1.1 (2026-11-11)
+
+### Bug Fixes
+
+-  add method for createing OulCancelled message ([be329](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/be32909caed23a5) Nils Elveros)  
+
 ## 2.1.0 (2026-11-10)
 
 ### Features
