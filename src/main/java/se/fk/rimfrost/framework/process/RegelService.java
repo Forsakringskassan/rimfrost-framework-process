@@ -12,6 +12,7 @@ import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.RegelRequestMessagePayloadData;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
 import se.fk.rimfrost.framework.regel.Utfall;
+import se.fk.rimfrost.framework.regel.oul.RegelOulCancelledMessagePayloadData;
 
 @ApplicationScoped
 public class RegelService
@@ -40,6 +41,14 @@ public class RegelService
       requestMessageData.setAktivitetId(aktivitetId);
       processvyService.getProcessvyUrl().ifPresent(requestMessageData::setProcessvyUrl);
       return requestMessageData;
+   }
+
+   public RegelOulCancelledMessagePayloadData createRegelOulCancelled(String handlaggningId)
+   {
+      LOGGER.info("Starting create RegelOulCancelled for handlaggningId: {}", handlaggningId);
+      RegelOulCancelledMessagePayloadData cancelledMessageData = new RegelOulCancelledMessagePayloadData();
+      cancelledMessageData.setHandlaggningId(handlaggningId);
+      return cancelledMessageData;
    }
 
    public RegelProcessResult handleError(String handlaggningId, RegelResponseMessagePayloadData response)
