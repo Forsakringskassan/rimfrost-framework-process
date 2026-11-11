@@ -38,6 +38,17 @@ public class RegelServiceTest
       assertEquals("/process/test", request.getProcessvyUrl());
    }
 
+   @Test
+   public void should_return_expected_regel_oul_cancelled()
+   {
+      String handlaggningId = UUID.randomUUID().toString();
+
+      var cancelled = regelService.createRegelOulCancelled(handlaggningId);
+
+      assertNotNull(cancelled);
+      assertEquals(handlaggningId, cancelled.getHandlaggningId());
+   }
+
    @ParameterizedTest
    @CsvSource(
    {
