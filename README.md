@@ -104,31 +104,23 @@ Ett steg kan bestå av understeg, till exempel en bedömning som består av fler
 
 Reglerna gäller hela trädet: ett steg har antingen `aktiviteter` eller `steg`, aldrig båda, id är unika i hela processbeskrivningen och ett aktivitets-ID får bara höra till ett steg. Felmeddelandet anger var i trädet felet finns, till exempel `steg[0].steg[1]: 'aktiviteter' must contain at least one aktivitets-ID`. En processbeskrivning utan understeg fungerar som tidigare.
 
-#### Schema och validering i CI
+#### Schema och validering
 
 Formatet beskrivs av JSON Schemat [`src/main/resources/schema/processbeskrivning.schema.json`](src/main/resources/schema/processbeskrivning.schema.json). Schemat beskriver alla fält och vilka som är obligatoriska, att aktivitets-ID:n är UUID, att ett steg har antingen `aktiviteter` eller `steg`, att inga andra fält är tillåtna och att det finns högst tre nivåer.
 
-En process validerar sin `processbeskrivning.json` mot schemat i CI genom att anropa ramverkets workflow från sin `maven-ci`, på samma sätt som regel-repona validerar `config.yaml` mot `rimfrost-framework-regel`:
+En process validerar sin `processbeskrivning.json` i sitt eget test med `ProcessbeskrivningVerifier`, se [Testhjälpmedel](#testhjälpmedel). Verifieraren läser filen med samma inläsare som när processen startar, så testet kontrollerar allt schemat kontrollerar och dessutom reglerna i tabellen nedan. Testet körs i processens bygge och i `maven-ci`, med ramverksversionen i processens `pom.xml`, så valideringen följer med när Renovate uppgraderar ramverket.
 
-```yaml
-jobs:
-  validate-processbeskrivning:
-    uses: Forsakringskassan/rimfrost-framework-process/.github/workflows/validate-processbeskrivning.yaml@main
-    with:
-      framework-ref: main
-```
-
-`framework-ref` anger vilken version av ramverket schemat hämtas från, till exempel `main`, en tagg eller en branch. Ange samma ref i `uses:` och `framework-ref`, så att workflowet och schemat kommer från samma version. Workflowet validerar `src/main/resources/processbeskrivning.json`. Saknas filen går valideringen igenom, eftersom processbeskrivningen är valfri.
+Ramverket har också ett återanvändbart workflow, `.github/workflows/validate-processbeskrivning.yaml`, som validerar `src/main/resources/processbeskrivning.json` mot schemat utan Maven. Saknas filen går valideringen igenom, eftersom processbeskrivningen är valfri. Processerna anropar inte workflowet: anropet anger ramverkets version en gång till (`uses:` och `framework-ref`), och Renovate uppdaterar bara `uses:`, så versionerna glider isär.
 
 Schemat och ramverket delar på kontrollen:
 
-| Kontroll | Schemat (CI) | Ramverket (när processen startar) |
+| Kontroll | Schemat | Ramverket (när processen startar och i processens test) |
 |---|---|---|
 | Obligatoriska fält, okända fält, UUID-format | ja | ja |
 | `aktiviteter` eller `steg`, högst tre nivåer | ja | ja |
 | Unika id i hela processbeskrivningen | nej | ja |
 | Ett aktivitets-ID hör bara till ett steg | nej | ja |
-| Varje aktivitet i BPMN-filen finns i processbeskrivningen | nej | nej, se [Testhjälpmedel](#testhjälpmedel) |
+| Varje aktivitet i BPMN-filen finns i processbeskrivningen | nej | bara i testet, med `ProcessbeskrivningVerifier` |
 
 Ett JSON Schema kan inte uttrycka unikhet över hela trädet, så de reglerna kontrolleras bara av ramverket. En processbeskrivning som går igenom ramverkets kontroll går också igenom schemat. Ramverkets test `ProcessbeskrivningSchemaTest` validerar README:ns exempel och testernas processbeskrivningar mot både schemat och ramverket, så att de inte glider isär.
 
