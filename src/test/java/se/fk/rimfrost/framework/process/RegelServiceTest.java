@@ -1,4 +1,4 @@
-package se.fk.framework.process;
+package se.fk.rimfrost.framework.process;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import se.fk.rimfrost.framework.process.RegelService;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.error.RegelFelkod;
 import se.fk.rimfrost.framework.regel.RegelResponseMessagePayloadData;
@@ -29,12 +28,14 @@ public class RegelServiceTest
    {
       String handlaggningId = UUID.randomUUID().toString();
       String aktivitetId = UUID.randomUUID().toString();
+      String handlaggningInstanceBaseUrl = UUID.randomUUID().toString();
 
-      var request = regelService.createRegelRequest(handlaggningId, aktivitetId);
+      var request = regelService.createRegelRequest(handlaggningId, aktivitetId, handlaggningInstanceBaseUrl);
 
       assertNotNull(request);
       assertEquals(handlaggningId, request.getHandlaggningId());
       assertEquals(aktivitetId, request.getAktivitetId());
+      assertEquals(handlaggningInstanceBaseUrl, request.getHandlaggningInstanceBaseUrl());
       assertEquals("/process/test", request.getProcessvyUrl());
    }
 

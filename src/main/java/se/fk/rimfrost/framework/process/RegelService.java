@@ -32,13 +32,15 @@ public class RegelService
       return new RegelProcessResult(response.getUtfall(), response.getError());
    }
 
-   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId)
+   public RegelRequestMessagePayloadData createRegelRequest(String handlaggningId, String aktivitetId,
+         String handlaggningInstanceBaseUrl)
    {
       LOGGER.info("Starting create RegelRequest for handlaggningId: {}, aktivitetId: {}",
             handlaggningId, aktivitetId);
       RegelRequestMessagePayloadData requestMessageData = new RegelRequestMessagePayloadData();
       requestMessageData.setHandlaggningId(handlaggningId);
       requestMessageData.setAktivitetId(aktivitetId);
+      requestMessageData.setHandlaggningInstanceBaseUrl(handlaggningInstanceBaseUrl);
       processvyService.getProcessvyUrl().ifPresent(requestMessageData::setProcessvyUrl);
       return requestMessageData;
    }
