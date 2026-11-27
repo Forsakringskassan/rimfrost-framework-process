@@ -2,6 +2,21 @@
 
 Changelog of rimfrost-framework-process.
 
+## 2.2.0 (2026-11-27)
+
+### Features
+
+-  Bump rimfrost-framework-regel-asyncapi to 1.3.1 ([27aad](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/27aad2fd2c5d4e1) Lars Persson)  
+
+### Bug Fixes
+
+-  **deps**  update dependency se.fk.rimfrost.framework.regel.oul:rimfrost-framework-regel-oul-asyncapi to v0.0.5 ([2dbc0](https://github.com/Forsakringskassan/rimfrost-framework-process/commit/2dbc08cf82ae110) renovate[bot])  
+
+## rimfrost-1_3 (2026-11-13)
+
+### Other changes
+
+
 ## 2.1.1 (2026-11-11)
 
 ### Bug Fixes
