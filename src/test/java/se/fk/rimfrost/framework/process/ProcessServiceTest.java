@@ -1,12 +1,10 @@
-package se.fk.framework.process;
+package se.fk.rimfrost.framework.process;
 
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import se.fk.rimfrost.HandlaggningRequestMessageData;
-import se.fk.rimfrost.framework.process.ProcessService;
-import se.fk.rimfrost.framework.process.RegelProcessResult;
 import se.fk.rimfrost.framework.regel.RegelErrorInformation;
 import se.fk.rimfrost.framework.regel.error.RegelFelkod;
 import se.fk.rimfrost.framework.regel.Utfall;

@@ -1,4 +1,4 @@
-package se.fk.framework.process;
+package se.fk.rimfrost.framework.process;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -13,7 +13,6 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.QuarkusTestProfile;
 import io.quarkus.test.junit.TestProfile;
 import jakarta.inject.Inject;
-import se.fk.rimfrost.framework.process.RegelService;
 
 @QuarkusTest
 @TestProfile(RegelServiceUtanProcessvyTest.UtanProcessvyUrl.class)
@@ -28,11 +27,13 @@ public class RegelServiceUtanProcessvyTest
    {
       String handlaggningId = UUID.randomUUID().toString();
       String aktivitetId = UUID.randomUUID().toString();
+      String handlaggningInstanceBaseUrl = UUID.randomUUID().toString();
 
-      var request = regelService.createRegelRequest(handlaggningId, aktivitetId);
+      var request = regelService.createRegelRequest(handlaggningId, aktivitetId, handlaggningInstanceBaseUrl);
 
       assertEquals(handlaggningId, request.getHandlaggningId());
       assertEquals(aktivitetId, request.getAktivitetId());
+      assertEquals(handlaggningInstanceBaseUrl, request.getHandlaggningInstanceBaseUrl());
       assertNull(request.getProcessvyUrl());
    }
 
